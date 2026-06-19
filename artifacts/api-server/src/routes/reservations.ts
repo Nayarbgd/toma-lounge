@@ -2,6 +2,7 @@ import { Router } from "express";
 import { supabaseAnon, supabaseAdmin } from "../lib/supabase.js";
 import { CreateReservationBody, UpdateReservationBody } from "@workspace/api-zod";
 import { requireAdmin } from "../middleware/auth.js";
+import { sendNewReservationEmail } from "../lib/email.js";
 
 const router = Router();
 
@@ -34,6 +35,22 @@ router.post("/reservations", async (req, res) => {
     req.log.error({ err: error }, "Failed to create reservation");
     res.status(500).json({ error: "Failed to create reservation" });
     return;
+  }
+
+  // Fire-and-forget email notification — never block or fail the reservation
+  try {
+    await sendNewReservationEmail({
+      id: String(data.id),
+      name: data.name as string,
+      phone: data.phone as string,
+      date: data.date as string,
+      time: data.time as string,
+      partySize: data.party_size as number,
+      notes: (data.notes as string | null) ?? null,
+      status: (data.status as string) ?? "pending",
+    });
+  } catch (emailErr) {
+    req.log.error({ err: emailErr }, "Reservation email notification failed (non-fatal)");
   }
 
   res.status(201).json(toReservationResponse(data));

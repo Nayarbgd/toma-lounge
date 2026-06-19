@@ -1,0 +1,39 @@
+Upgrade the existing /admin/dashboard into a complete owner-facing operations dashboard for Toma Lounge, building on the existing reservations table and Supabase Realtime (if already added). Keep the existing login, branding, and reservation list — expand around it.
+
+=== OVERVIEW SECTION (top of dashboard) ===
+- Today's reservations count
+- This week's reservations count
+- Breakdown by status: Pending / Confirmed / Cancelled / Completed (small stat cards)
+- Upcoming reservations in the next 2 hours, highlighted (so staff can prep tables)
+
+=== RESERVATIONS VIEW IMPROVEMENTS ===
+- Default view: today's reservations, sorted by time
+- Toggle/filter: Today / This Week / All / Custom date range
+- Filter by status (multi-select: show Pending + Confirmed, hide Cancelled, etc.)
+- Search by guest name or phone number
+- Sort by date, time, or party size
+- The delete button already added — keep it
+- Inline status change already added — keep it
+- Show a small "time ago" label (e.g., "Booked 12 min ago") next to each reservation's created_at
+
+=== CALENDAR VIEW (new tab/section) ===
+- Simple month or week calendar showing reservation counts per day
+- Clicking a day filters the reservations table to that date
+
+=== QUICK ACTIONS ===
+- One-click "Confirm" and "Cancel" buttons directly in the row (not just a dropdown), for the most common actions
+- Bulk action: select multiple pending reservations and confirm them all at once
+
+=== EXPORT ===
+- "Export to CSV" button for the current filtered view (e.g., export this week's confirmed reservations) — useful for the owner's own records or accounting
+
+=== MOBILE-FIRST ===
+- This dashboard will mainly be checked on the owner's phone during service — prioritize a clean, fast, thumb-friendly mobile layout over desktop-first design, while still working well on desktop
+
+=== TECHNICAL REQUIREMENTS ===
+- Keep using Supabase (service-role server-side queries, same auth pattern as the existing dashboard)
+- Use Supabase Realtime for the today/upcoming sections if already integrated, so new bookings and status changes update live
+- Don't break or remove any existing functionality (login, current reservation list, status updates, delete)
+- Keep performance reasonable — paginate or limit queries for the "All" view if reservation volume grows
+
+Build this incrementally and show me a screenshot of the dashboard once the overview section and improved reservations view are working, before moving on to the calendar view.
