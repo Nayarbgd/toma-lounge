@@ -1,0 +1,212 @@
+PROJECT: Toma Lounge Reservation System
+
+IMPORTANT:
+Do NOT refactor unrelated code.
+Do NOT change API contracts unnecessarily.
+Do NOT break realtime, auth, dashboard, or owner email notifications.
+
+==================================================
+NEW EMAIL FLOW REQUIREMENT
+==========================
+
+Current issue:
+
+The owner receives a reservation email correctly.
+
+The guest NEVER receives any email.
+
+I do NOT want to send two emails to the guest.
+
+New desired flow:
+
+1. Guest submits reservation.
+2. Reservation is created with status = "pending".
+3. ONLY the owner receives a "New Reservation" email.
+4. Guest receives NO email at this stage.
+5. When an admin changes the reservation status to "confirmed" from the dashboard, THEN the guest automatically receives ONE confirmation email.
+
+==================================================
+PART 1 - MAKE EMAIL REQUIRED
+============================
+
+Reservation form:
+
+Required fields:
+
+* Name
+* Phone
+* Email
+* Date
+* Time
+* Party Size
+
+Update:
+
+* React form validation
+* Zod schemas
+* API validation
+* Types/interfaces if necessary
+
+The form must not submit without a valid email address.
+
+Display a proper validation message:
+
+"Email is required for reservation confirmation."
+
+Do NOT break existing reservations that already have null emails in the database.
+
+Handle legacy data safely.
+
+==================================================
+PART 2 - REMOVE GUEST EMAIL ON RESERVATION CREATION
+===================================================
+
+Current behavior:
+
+POST /api/reservations
+
+sends:
+
+1. Owner email
+2. Guest "Reservation Received" email
+
+REMOVE:
+
+The guest email completely.
+
+After this change:
+
+POST /api/reservations should ONLY send:
+
+Owner notification email.
+
+Guest receives nothing.
+
+==================================================
+PART 3 - SEND EMAIL ONLY WHEN STATUS BECOMES CONFIRMED
+======================================================
+
+When:
+
+PATCH /api/reservations/:id
+
+changes:
+
+pending -> confirmed
+
+OR
+
+cancelled -> confirmed
+
+OR
+
+any non-confirmed status -> confirmed
+
+Then:
+
+sendReservationConfirmedEmail()
+
+Requirements:
+
+Send the email ONLY once.
+
+Do NOT resend if:
+
+confirmed -> confirmed
+
+Prevent duplicate emails.
+
+Pseudo logic:
+
+if (
+previousStatus !== "confirmed" &&
+newStatus === "confirmed"
+) {
+sendReservationConfirmedEmail();
+}
+
+==================================================
+EMAIL CONTENT
+=============
+
+Subject:
+
+Reservation Confirmed — Toma Lounge
+
+Body:
+
+Hello [Guest Name],
+
+Your reservation at Toma Lounge has been confirmed.
+
+Reservation Details:
+
+Date:
+Time:
+Guests:
+
+Location:
+Cayan Business Center
+Barsha Heights (Tecom)
+Dubai, UAE
+
+Phone:
++971 58 109 5540
+
+We look forward to welcoming you.
+
+Use existing Toma Lounge email branding:
+
+* dark background
+* turquoise accent
+* gold accent
+
+Optional:
+
+Add a "View Location" button linking to Google Maps.
+
+==================================================
+ERROR HANDLING
+==============
+
+Email sending must NEVER break the reservation update.
+
+Wrap email sending in try/catch.
+
+The reservation status must still become "confirmed" even if email delivery fails.
+
+Log errors with Pino.
+
+==================================================
+TEST CASES
+==========
+
+Case 1:
+Create reservation.
+Expected:
+Owner receives email.
+Guest receives nothing.
+
+Case 2:
+Admin clicks Confirm.
+Expected:
+Guest receives one confirmation email.
+
+Case 3:
+Admin edits reservation already confirmed.
+Expected:
+No additional emails.
+
+Case 4:
+Admin changes:
+pending -> cancelled.
+Expected:
+No email.
+
+Case 5:
+Admin changes:
+cancelled -> confirmed.
+Expected:
+One confirmation email.
+
+Implement these changes incrementally and explain each modified file before proceeding to the next step.

@@ -213,7 +213,7 @@ export function Contact() {
   const [occasion, setOccasion] = useState("");
   const [specialRequests, setSpecialRequests] = useState("");
   const [showOptional, setShowOptional] = useState(false);
-  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string; phone?: string; email?: string }>({});
 
   // Date options: next 21 days
   const dateOptions = useMemo(
@@ -237,6 +237,7 @@ export function Contact() {
     const errs: typeof errors = {};
     if (!name.trim() || name.trim().length < 2) errs.name = "Name is required";
     if (!phone.trim() || phone.trim().length < 5) errs.phone = "Phone number is required";
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) errs.email = "Email is required for reservation confirmation.";
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setErrors({});
 
@@ -440,14 +441,16 @@ export function Contact() {
                         </div>
                         <div>
                           <label className="text-xs font-medium text-foreground mb-1.5 block">
-                            Email <span className="text-muted-foreground font-normal">(optional — for confirmation)</span>
+                            Email <span className="text-red-500">*</span>
                           </label>
                           <Input
                             type="email"
                             placeholder="you@example.com"
                             value={email}
-                            onChange={e => setEmail(e.target.value)}
+                            onChange={e => { setEmail(e.target.value); setErrors(p => ({ ...p, email: undefined })); }}
+                            className={errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}
                           />
+                          {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                         </div>
                       </div>
 
