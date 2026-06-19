@@ -12,6 +12,7 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 const formSchema = z.object({
   name: z.string().min(2, "Name is required"),
   phone: z.string().min(5, "Phone number is required"),
+  email: z.string().email("Invalid email").optional().or(z.literal("")),
   date: z.string().min(1, "Date is required"),
   partySize: z.coerce.number().min(1).max(50),
   occasion: z.string().optional(),
@@ -27,6 +28,7 @@ export function Contact() {
     defaultValues: {
       name: "",
       phone: "",
+      email: "",
       date: "",
       partySize: 2,
       occasion: "",
@@ -136,6 +138,19 @@ export function Contact() {
                       <FormLabel>Phone</FormLabel>
                       <FormControl>
                         <Input placeholder="05X XXX XXXX" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="md:col-span-2">
+                      <FormLabel>Email <span className="text-muted-foreground text-xs font-normal">(optional — for booking confirmation)</span></FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="you@example.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

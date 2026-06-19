@@ -2,7 +2,7 @@ import { Router } from "express";
 import { supabaseAnon, supabaseAdmin } from "../lib/supabase.js";
 import { CreateReservationBody, UpdateReservationBody } from "@workspace/api-zod";
 import { requireAdmin } from "../middleware/auth.js";
-import { sendNewReservationEmail } from "../lib/email.js";
+import { sendNewReservationEmail, sendConfirmationEmail } from "../lib/email.js";
 
 const router = Router();
 
@@ -51,6 +51,24 @@ router.post("/reservations", async (req, res) => {
     });
   } catch (emailErr) {
     req.log.error({ err: emailErr }, "Reservation email notification failed (non-fatal)");
+  }
+
+  // Guest confirmation email (fire-and-forget)
+  const guestEmail = (parsed.data as any).email as string | null | undefined;
+  if (guestEmail) {
+    try {
+      await sendConfirmationEmail({
+        name: data.name as string,
+        phone: data.phone as string,
+        date: data.date as string,
+        time: data.time as string,
+        partySize: data.party_size as number,
+        notes: (data.notes as string | null) ?? null,
+        guestEmail,
+      });
+    } catch (confirmErr) {
+      req.log.error({ err: confirmErr }, "Guest confirmation email failed (non-fatal)");
+    }
   }
 
   res.status(201).json(toReservationResponse(data));

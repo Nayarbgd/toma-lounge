@@ -139,6 +139,127 @@ function buildEmailHtml(data: NewReservationEmailData): string {
 </html>`;
 }
 
+export interface ConfirmationEmailData {
+  name: string;
+  phone: string;
+  date: string;
+  time: string;
+  partySize: number;
+  notes: string | null;
+  guestEmail: string;
+}
+
+function buildConfirmationHtml(data: ConfirmationEmailData): string {
+  const formattedDate = formatDate(data.date);
+  const formattedTime = formatTime(data.time);
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservation Received</title>
+</head>
+<body style="margin:0;padding:0;background-color:#0d0d0d;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0d0d0d;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="background-color:#1a1a1a;border-radius:12px;overflow:hidden;border:1px solid #2a2a2a;max-width:600px;">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#0f2a2e 0%,#1a1a1a 100%);padding:36px 40px;border-bottom:2px solid #2EC4D6;text-align:center;">
+              <p style="margin:0 0 8px 0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#2EC4D6;">Toma Lounge</p>
+              <h1 style="margin:0 0 8px 0;font-size:28px;font-weight:700;color:#ffffff;">We've Got Your Table!</h1>
+              <p style="margin:0;font-size:15px;color:#999999;">Your reservation request has been received.</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:36px 40px;">
+              <p style="margin:0 0 24px 0;font-size:16px;color:#cccccc;">Hi <strong style="color:#ffffff;">${data.name}</strong>,<br/>thank you for choosing Toma Lounge. Here's a summary of your booking:</p>
+
+              <!-- Details -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#222222;border-radius:8px;overflow:hidden;margin-bottom:28px;">
+                <tr>
+                  <td style="padding:20px 24px;border-bottom:1px solid #2a2a2a;width:50%;">
+                    <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#666666;">Date</p>
+                    <p style="margin:0;font-size:15px;font-weight:600;color:#ffffff;">${formattedDate}</p>
+                  </td>
+                  <td style="padding:20px 24px;border-bottom:1px solid #2a2a2a;border-left:1px solid #2a2a2a;">
+                    <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#666666;">Time</p>
+                    <p style="margin:0;font-size:15px;font-weight:600;color:#ffffff;">${formattedTime}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:20px 24px;" colspan="2">
+                    <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#666666;">Party Size</p>
+                    <p style="margin:0;font-size:15px;font-weight:600;color:#ffffff;">${data.partySize} ${data.partySize === 1 ? "guest" : "guests"}</p>
+                  </td>
+                </tr>
+                ${data.notes ? `
+                <tr>
+                  <td style="padding:0 24px 20px 24px;border-top:1px solid #2a2a2a;" colspan="2">
+                    <p style="margin:0 0 4px 0;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#666666;">Notes</p>
+                    <p style="margin:0;font-size:15px;color:#cccccc;">${data.notes}</p>
+                  </td>
+                </tr>` : ""}
+              </table>
+
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#C9A24B1a;border:1px solid #C9A24B33;border-radius:8px;margin-bottom:28px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <p style="margin:0;font-size:13px;color:#C9A24B;line-height:1.6;">
+                      Our team will confirm your reservation shortly. If you need to make changes, call us at <strong>058 109 5540</strong>.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:20px 40px;border-top:1px solid #2a2a2a;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#555555;">Toma Lounge · Cayan Business Center, Barsha Heights · 058 109 5540</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+export async function sendConfirmationEmail(data: ConfirmationEmailData): Promise<void> {
+  if (!resend) {
+    logger.warn("RESEND_API_KEY not set — skipping confirmation email");
+    return;
+  }
+
+  const formattedDate = formatDate(data.date);
+  const formattedTime = formatTime(data.time);
+  const subject = `Reservation Received — ${formattedDate} at ${formattedTime}`;
+
+  const { error } = await resend.emails.send({
+    from: "Toma Lounge <onboarding@resend.dev>",
+    to: data.guestEmail,
+    subject,
+    html: buildConfirmationHtml(data),
+  });
+
+  if (error) {
+    logger.error({ err: error }, "Failed to send confirmation email via Resend");
+    throw new Error(error.message);
+  }
+
+  logger.info({ to: data.guestEmail, guest: data.name }, "Confirmation email sent to guest");
+}
+
 export async function sendNewReservationEmail(
   data: NewReservationEmailData
 ): Promise<void> {

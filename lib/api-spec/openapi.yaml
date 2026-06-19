@@ -210,6 +210,11 @@ components:
         notes:
           type: ["string", "null"]
           maxLength: 500
+        email:
+          type: ["string", "null"]
+          format: email
+          maxLength: 254
+          description: Guest email for booking confirmation (optional)
     UpdateReservationBody:
       type: object
       required:

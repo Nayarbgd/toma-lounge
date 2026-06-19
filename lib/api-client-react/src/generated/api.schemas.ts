@@ -37,6 +37,12 @@ export interface ReservationInput {
      * @nullable
      */
   notes?: string | null;
+  /**
+     * Guest email for booking confirmation (optional)
+     * @maxLength 254
+     * @nullable
+     */
+  email?: string | null;
 }
 
 export type UpdateReservationBodyStatus = typeof UpdateReservationBodyStatus[keyof typeof UpdateReservationBodyStatus];

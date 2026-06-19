@@ -30,6 +30,8 @@ export const createReservationBodyOccasionMax = 200;
 
 export const createReservationBodyNotesMax = 500;
 
+export const createReservationBodyEmailMax = 254;
+
 
 
 export const CreateReservationBody = zod.object({
@@ -38,7 +40,8 @@ export const CreateReservationBody = zod.object({
   "date": zod.string().describe('Reservation datetime (ISO 8601 or datetime-local string)'),
   "partySize": zod.number().min(1).max(createReservationBodyPartySizeMax),
   "occasion": zod.string().max(createReservationBodyOccasionMax).nullish(),
-  "notes": zod.string().max(createReservationBodyNotesMax).nullish()
+  "notes": zod.string().max(createReservationBodyNotesMax).nullish(),
+  "email": zod.string().email().max(createReservationBodyEmailMax).nullish().describe('Guest email for booking confirmation (optional)')
 })
 
 
