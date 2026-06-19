@@ -15,7 +15,7 @@ paths = [ "/" ]
 localPort = 21968
 
 [services.development]
-run = "pnpm --filter @workspace/toma-lounge run dev"
+run = "cd /home/runner/workspace && pnpm --filter @workspace/toma-lounge run dev"
 
 [services.production]
 build = [ "pnpm", "--filter", "@workspace/toma-lounge", "run", "build" ]

@@ -1,8 +1,11 @@
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
+import { createProxyMiddleware } from "http-proxy-middleware";
 import router from "./routes";
 import { logger } from "./lib/logger";
+
+const VITE_PORT = process.env.VITE_PORT ?? "21968";
 
 const app: Express = express();
 
@@ -30,5 +33,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    "/",
+    createProxyMiddleware({
+      target: `http://localhost:${VITE_PORT}`,
+      changeOrigin: true,
+      ws: true,
+    }),
+  );
+}
 
 export default app;
