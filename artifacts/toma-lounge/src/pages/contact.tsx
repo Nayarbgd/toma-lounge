@@ -313,6 +313,20 @@ export function Contact() {
               </div>
             </div>
           </div>
+
+          {/* ── Google Map ── */}
+          <div className="rounded-xl overflow-hidden border border-border h-64 w-full">
+            <iframe
+              title="Toma Lounge Location"
+              src="https://maps.google.com/maps?q=Toma+Lounge+Cayan+Business+Center+Barsha+Heights+Dubai&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
 
         {/* ── Right: Reservation Wizard ── */}
