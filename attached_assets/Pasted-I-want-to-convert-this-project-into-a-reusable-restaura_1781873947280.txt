@@ -1,0 +1,167 @@
+I want to convert this project into a reusable restaurant reservation platform and implementation template.
+
+Your task is NOT to modify code.
+
+Your task is to DOCUMENT EVERYTHING required to recreate this project from scratch for another restaurant.
+
+Generate a complete implementation playbook in Markdown.
+
+The document must be written for another developer (or future me) and should allow recreating the system as quickly as possible.
+
+Structure:
+
+# 1. Project Overview
+
+* Architecture diagram
+* Tech stack
+* Folder structure
+* Dependencies and why they exist
+
+# 2. Environment Variables
+
+For each variable:
+
+* Name
+* Purpose
+* Example value
+* Required or optional
+* Frontend or backend
+* Where it is used (file paths)
+
+Include:
+
+SUPABASE_URL
+SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+RESEND_API_KEY
+OWNER_EMAIL
+PORT
+and all other env variables found in the codebase.
+
+# 3. Supabase Setup Checklist
+
+* Create project
+* Enable Auth
+* Create tables
+* Required columns
+* Required indexes
+* Realtime setup
+* SQL scripts
+* RLS policies
+* Triggers
+* Storage requirements
+
+Generate all SQL needed.
+
+# 4. Resend Setup Checklist
+
+* Create account
+* Create API key
+* Verify domain
+* DNS records
+* Environment variables
+* Testing procedure
+
+# 5. Backend Setup
+
+Step-by-step:
+
+* Install dependencies
+* Configure Supabase
+* Configure Resend
+* Start API server
+* Test endpoints
+
+# 6. Frontend Setup
+
+* Install dependencies
+* Configure environment variables
+* Run development server
+* Verify dashboard
+* Verify public reservation flow
+
+# 7. Reservation Flow Documentation
+
+Public Form
+→ API
+→ Database
+→ Emails
+→ Dashboard
+→ Realtime
+→ Status Updates
+
+Generate a flow diagram.
+
+# 8. Dashboard Documentation
+
+Document every feature:
+
+Overview
+Reservations
+Calendar
+Analytics
+Settings
+Business Hours
+Blocked Dates
+Blocked Time Slots
+Tables
+Reservation Availability
+
+Explain:
+
+* purpose
+* files involved
+* API endpoints
+* database tables
+
+# 9. Deployment Checklist
+
+Replit
+GitHub
+Vercel
+Supabase
+Resend
+
+Generate a step-by-step deployment procedure.
+
+# 10. Troubleshooting Guide
+
+Generate solutions for:
+
+* missing Secrets
+* broken Supabase connection
+* broken Realtime
+* dashboard not updating
+* emails not sending
+* authentication failures
+* invalid environment variables
+* deployment failures
+
+# 11. New Restaurant Onboarding Checklist
+
+Generate a checklist that allows me to clone this project for a new restaurant in less than two hours.
+
+Include:
+
+□ Duplicate project
+□ Create Supabase project
+□ Run SQL
+□ Add Secrets
+□ Add restaurant branding
+□ Add domain
+□ Configure Resend
+□ Configure emails
+□ Test reservations
+□ Test dashboard
+□ Deploy
+
+# 12. Generate a final "Quick Start Guide"
+
+I want a single condensed checklist that I can print or save as a PDF and use every time I onboard a new restaurant.
+
+Output everything as:
+
+/docs/IMPLEMENTATION_PLAYBOOK.md
+
+Do not modify code.
+Documentation only.

@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "PnrVkPJ_Ti7M4PL4BpGjy"
@@ -36,3 +35,9 @@ id = "cXL0OZNEXPl53vap0dAwt"
 uri = "file://artifacts/toma-lounge/public/images/buffet.png"
 type = "image"
 title = "Ramadan iftar buffet"
+
+[[outputs]]
+id = "6hcORI7jixA3FrUyOEfg6"
+uri = "file://docs/IMPLEMENTATION_PLAYBOOK.md"
+type = "text"
+title = "Implementation Playbook"
