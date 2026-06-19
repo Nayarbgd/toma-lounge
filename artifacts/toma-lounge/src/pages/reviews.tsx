@@ -53,7 +53,7 @@ export function Reviews() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
         {reviews.map((review, idx) => (
           <motion.div 
             key={idx}
@@ -80,6 +80,18 @@ export function Reviews() {
             </p>
           </motion.div>
         ))}
+      </div>
+
+      <div className="text-center">
+        <a
+          href="https://www.google.com/maps/place/Toma+lounge/@25.0951615,55.1732905,760m/data=!3m1!1e3!4m8!3m7!1s0x3e5f6bd0a50d3f1d:0xec124c5994cd5024!8m2!3d25.0951567!4d55.1758654!9m1!1b1!16s%2Fg%2F11lr9n6q2k?entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 border border-secondary text-secondary hover:bg-secondary/10 transition-colors px-8 py-3 rounded-full font-medium text-sm"
+        >
+          <Star size={15} fill="currentColor" />
+          Ver más reviews en Google
+        </a>
       </div>
     </div>
   );
