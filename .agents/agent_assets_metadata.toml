@@ -41,3 +41,15 @@ id = "6hcORI7jixA3FrUyOEfg6"
 uri = "file://docs/IMPLEMENTATION_PLAYBOOK.md"
 type = "text"
 title = "Implementation Playbook"
+
+[[outputs]]
+id = "6KPG4QmfwyY7tgiEQZUJp"
+uri = "file://docs/AI_CONTEXT.md"
+type = "text"
+title = "AI_CONTEXT.md"
+
+[[outputs]]
+id = "KdjwiD9JlVBGLshkL0WG3"
+uri = "file://docs/PROJECT_BOOTSTRAP_PROMPT.md"
+type = "text"
+title = "PROJECT_BOOTSTRAP_PROMPT.md"

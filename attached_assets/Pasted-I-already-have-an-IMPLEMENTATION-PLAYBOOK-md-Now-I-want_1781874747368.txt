@@ -1,0 +1,202 @@
+I already have an IMPLEMENTATION_PLAYBOOK.md.
+
+Now I want to build a reusable business system framework that can be adapted to ANY client project (restaurants, clinics, gyms, lawyers, barbershops, agencies, etc.).
+
+DO NOT MODIFY ANY CODE.
+
+Your task is to generate TWO DOCUMENTS ONLY:
+
+1. /docs/AI_CONTEXT.md
+2. /docs/PROJECT_BOOTSTRAP_PROMPT.md
+
+These documents must be GENERIC and REUSABLE across different industries.
+
+===========================================================
+FILE 1: AI_CONTEXT.md
+=====================
+
+Purpose:
+This file should act as a permanent brain for future AI assistants (Replit AI, Claude, ChatGPT, Cursor, etc.).
+
+The document should teach any AI:
+
+* What this type of project is.
+* How to think before making changes.
+* Architecture principles.
+* Development philosophy.
+* Rules and constraints.
+* How to avoid breaking existing systems.
+
+Include sections such as:
+
+# Project Philosophy
+
+* Build reusable systems.
+* Prefer modular architecture.
+* Prefer additive changes over destructive refactors.
+* Prioritize maintainability and scalability.
+* Minimize dependencies.
+* Preserve working functionality.
+
+# AI Operating Rules
+
+* Always inspect existing architecture first.
+* Never make assumptions.
+* Explain proposed changes before implementing.
+* Make incremental changes.
+* Avoid unnecessary refactors.
+* Avoid introducing complexity.
+* Keep business logic separate from presentation.
+* Prefer configuration over hardcoding.
+* Preserve backward compatibility.
+
+# Architecture Principles
+
+* Frontend
+* Backend
+* Database
+* Authentication
+* Emails
+* Realtime
+* Admin dashboards
+* APIs
+* Environment variables
+* Modular feature design
+
+# Environment Variable Rules
+
+* Never expose secrets.
+* Document all env variables.
+* Validate env variables on startup.
+
+# Database Rules
+
+* Prefer migrations.
+* Avoid destructive schema changes.
+* Preserve existing data.
+
+# API Rules
+
+* Version APIs when necessary.
+* Preserve contracts.
+* Validate inputs.
+* Use type safety.
+
+# Dashboard Principles
+
+* Mobile friendly.
+* Role-based.
+* Real-time when useful.
+* Analytics and settings separated.
+
+# Troubleshooting Principles
+
+* Diagnose before changing code.
+* Trace full request flow.
+* Identify root causes.
+
+# Reusable Project Strategy
+
+Explain that future projects will often consist of:
+
+1. Custom frontend (changes per client)
+2. Reusable business engine (reservations, CRM, dashboard, booking system, forms, notifications, analytics, etc.)
+
+The AI should understand that the goal is to reuse systems, not rebuild them from scratch every time.
+
+===========================================================
+FILE 2: PROJECT_BOOTSTRAP_PROMPT.md
+===================================
+
+Purpose:
+This file should be a universal prompt that can be pasted into any new Replit project.
+
+It should instruct the AI to:
+
+1. Read:
+
+* IMPLEMENTATION_PLAYBOOK.md
+* AI_CONTEXT.md
+* ARCHITECTURE.md (if present)
+* TROUBLESHOOTING.md (if present)
+
+2. Analyze the current codebase.
+
+3. Identify:
+
+* Existing architecture
+* Technologies
+* Dependencies
+* Environment variables
+* Reusable modules
+
+4. Ask for missing information:
+
+Business Name:
+Industry:
+Features:
+Branding:
+Domain:
+Emails:
+Dashboard requirements:
+Automations:
+Third-party integrations:
+
+5. Generate:
+
+* Implementation checklist
+* Architecture proposal
+* Database proposal
+* API proposal
+* Dashboard proposal
+* Deployment plan
+
+6. Implement incrementally.
+
+7. Never:
+
+* Refactor unrelated code.
+* Break working functionality.
+* Replace architecture without justification.
+* Introduce unnecessary dependencies.
+
+8. Default philosophy:
+
+Custom UI + Reusable Business Engine.
+
+The AI should assume that:
+
+Every project has:
+
+* unique branding
+* unique frontend
+* shared business systems
+
+Examples of reusable systems:
+
+* Reservations
+* Booking engines
+* CRMs
+* Forms
+* Notifications
+* Emails
+* Dashboards
+* Analytics
+* Admin panels
+* Authentication
+* Scheduling
+* Payments
+* Automations
+
+Generate both documents completely and professionally in Markdown.
+
+Output:
+
+/docs/AI_CONTEXT.md
+/docs/PROJECT_BOOTSTRAP_PROMPT.md
+
+Documentation only.
+
+No code changes.
+No refactors.
+No dependency installations.
