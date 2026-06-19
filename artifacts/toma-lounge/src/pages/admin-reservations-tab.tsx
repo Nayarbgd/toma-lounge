@@ -50,7 +50,7 @@ export function ReservationsTab({ allReservations, authHeaders, isLoading }: Pro
   const queryClient = useQueryClient();
   const queryKey = getListReservationsQueryKey();
 
-  const [dateFilter, setDateFilter] = useState<DateFilter>("today");
+  const [dateFilter, setDateFilter] = useState<DateFilter>("all");
   const [customStart, setCustomStart] = useState("");
   const [customEnd, setCustomEnd] = useState("");
   const [statusFilters, setStatusFilters] = useState<string[]>([]);

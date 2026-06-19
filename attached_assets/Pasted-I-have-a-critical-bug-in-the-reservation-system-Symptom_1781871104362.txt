@@ -1,0 +1,111 @@
+I have a critical bug in the reservation system.
+
+Symptoms:
+
+1. I create reservations from the public website.
+2. The owner notification emails are sent successfully.
+3. Therefore, POST /api/reservations is being executed.
+4. However, the admin dashboard shows zero new reservations.
+
+I need a full diagnosis before making changes.
+
+DO NOT refactor unrelated code.
+DO NOT create a new Supabase project.
+DO NOT change the database schema unless absolutely necessary.
+
+Please investigate:
+
+==================================================
+STEP 1 - TRACE THE RESERVATION FLOW
+===================================
+
+Trace the entire flow:
+
+Public Form
+→ POST /api/reservations
+→ Supabase insert
+→ Database table
+→ GET /api/reservations
+→ React Query
+→ Dashboard rendering
+
+Identify exactly where the data disappears.
+
+==================================================
+STEP 2 - VERIFY SUPABASE CONNECTIONS
+====================================
+
+Check whether:
+
+* frontend and backend use the same SUPABASE_URL
+* frontend and backend use the same database project
+* reservations are inserted into the same database being queried by the dashboard
+
+Print:
+
+* Supabase URL being used
+* table name
+* row count in reservations table
+
+==================================================
+STEP 3 - VERIFY DATABASE
+========================
+
+Query the reservations table directly.
+
+Show:
+
+* latest 10 rows
+* status
+* created_at
+* date
+* time
+
+Confirm whether the new reservations actually exist.
+
+==================================================
+STEP 4 - VERIFY DASHBOARD FETCHING
+==================================
+
+Check:
+
+GET /api/reservations
+
+Questions:
+
+* Is it returning data?
+* Is it returning an empty array?
+* Is there an error?
+* Is React Query caching old data?
+* Is there a filter excluding new reservations?
+
+==================================================
+STEP 5 - VERIFY REALTIME
+========================
+
+Check:
+
+useReservationsRealtime
+
+Questions:
+
+* Is subscription connected?
+* Is cache invalidation working?
+* Is query invalidation firing?
+
+==================================================
+STEP 6 - FIX
+============
+
+After identifying the root cause:
+
+Implement the minimal fix.
+
+Explain:
+
+1. Root cause.
+2. Files changed.
+3. Why the bug happened.
+4. Why the fix works.
+
+Do not perform broad refactors.
