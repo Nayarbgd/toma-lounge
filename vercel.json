@@ -1,6 +1,6 @@
 {
   "buildCommand": "pnpm --filter @workspace/toma-lounge run build",
-  "outputDirectory": "artifacts/toma-lounge/dist/public",
+  "outputDirectory": "artifacts/toma-lounge/dist",
   "installCommand": "pnpm install",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
