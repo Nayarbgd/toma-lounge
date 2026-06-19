@@ -55,6 +55,26 @@ router.get("/reservations", requireAdmin, async (req, res) => {
   res.json((data ?? []).map(toReservationResponse));
 });
 
+router.delete("/reservations/:id", requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { error } = await supabaseAdmin
+    .from("reservations")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    if (error.code === "PGRST116") {
+      res.status(404).json({ error: "Reservation not found" });
+      return;
+    }
+    req.log.error({ err: error }, "Failed to delete reservation");
+    res.status(500).json({ error: "Failed to delete reservation" });
+    return;
+  }
+
+  res.status(204).send();
+});
+
 router.patch("/reservations/:id", requireAdmin, async (req, res) => {
   const { id } = req.params;
   const parsed = UpdateReservationBody.safeParse(req.body);

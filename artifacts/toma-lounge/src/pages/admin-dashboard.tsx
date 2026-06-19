@@ -6,9 +6,19 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useListReservations, useUpdateReservation } from "@workspace/api-client-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useListReservations, useUpdateReservation, useDeleteReservation } from "@workspace/api-client-react";
 import { format } from "date-fns";
-import { LogOut, Filter } from "lucide-react";
+import { LogOut, Filter, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export function AdminDashboard() {
@@ -18,6 +28,7 @@ export function AdminDashboard() {
   const token = getToken();
 
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -25,60 +36,66 @@ export function AdminDashboard() {
     }
   }, [isAuthenticated, setLocation]);
 
+  const authHeaders = { Authorization: `Bearer ${token}` };
+
   const { data: allReservations, isLoading, refetch } = useListReservations({
-    request: {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
+    request: { headers: authHeaders },
   });
 
   const updateMutation = useUpdateReservation({
-    request: {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
+    request: { headers: authHeaders },
+  });
+
+  const deleteMutation = useDeleteReservation({
+    request: { headers: authHeaders },
   });
 
   const handleStatusChange = (id: string, newStatus: string) => {
     updateMutation.mutate(
-      { 
-        id, 
-        data: { status: newStatus as any } 
-      },
+      { id, data: { status: newStatus as any } },
       {
         onSuccess: () => {
-          toast({
-            title: "Status updated",
-            description: "Reservation status has been updated successfully.",
-          });
+          toast({ title: "Status updated", description: "Reservation status has been updated." });
           refetch();
         },
         onError: (error) => {
-          toast({
-            title: "Update failed",
-            description: error.message || "Could not update reservation status.",
-            variant: "destructive",
-          });
-        }
+          toast({ title: "Update failed", description: error.message || "Could not update status.", variant: "destructive" });
+        },
+      }
+    );
+  };
+
+  const handleDeleteConfirm = () => {
+    if (!deleteTargetId) return;
+    deleteMutation.mutate(
+      { id: deleteTargetId },
+      {
+        onSuccess: () => {
+          toast({ title: "Reservation deleted", description: "The reservation has been permanently removed." });
+          setDeleteTargetId(null);
+          refetch();
+        },
+        onError: (error) => {
+          toast({ title: "Delete failed", description: error.message || "Could not delete reservation.", variant: "destructive" });
+          setDeleteTargetId(null);
+        },
       }
     );
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "pending": return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
+      case "pending":   return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
       case "confirmed": return "bg-green-500/10 text-green-500 border-green-500/20";
       case "cancelled": return "bg-red-500/10 text-red-500 border-red-500/20";
       case "completed": return "bg-gray-500/10 text-gray-500 border-gray-500/20";
-      default: return "bg-gray-500/10 text-gray-500 border-gray-500/20";
+      default:          return "bg-gray-500/10 text-gray-500 border-gray-500/20";
     }
   };
 
-  const reservations = statusFilter === "all" 
-    ? allReservations 
-    : allReservations?.filter(r => r.status === statusFilter);
+  const reservations = statusFilter === "all"
+    ? allReservations
+    : allReservations?.filter((r) => r.status === statusFilter);
 
   if (!isAuthenticated) return null;
 
@@ -99,7 +116,6 @@ export function AdminDashboard() {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <h1 className="text-2xl font-bold">Reservations</h1>
-          
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-muted-foreground" />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -121,6 +137,7 @@ export function AdminDashboard() {
           <div className="text-center py-12 text-muted-foreground">Loading reservations...</div>
         ) : (
           <>
+            {/* Desktop table */}
             <div className="hidden md:block rounded-md border border-border/40 bg-card overflow-hidden">
               <Table>
                 <TableHeader>
@@ -131,6 +148,7 @@ export function AdminDashboard() {
                     <TableHead>Party</TableHead>
                     <TableHead>Notes</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead className="w-[52px]" />
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -149,10 +167,7 @@ export function AdminDashboard() {
                         {res.notes || "-"}
                       </TableCell>
                       <TableCell>
-                        <Select
-                          value={res.status}
-                          onValueChange={(val) => handleStatusChange(res.id, val)}
-                        >
+                        <Select value={res.status} onValueChange={(val) => handleStatusChange(res.id, val)}>
                           <SelectTrigger className={`h-8 w-[130px] text-xs ${getStatusColor(res.status)}`}>
                             <SelectValue />
                           </SelectTrigger>
@@ -164,11 +179,22 @@ export function AdminDashboard() {
                           </SelectContent>
                         </Select>
                       </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
+                          onClick={() => setDeleteTargetId(res.id)}
+                          aria-label="Delete reservation"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                   {(!reservations || reservations.length === 0) && (
                     <TableRow>
-                      <TableCell colSpan={6} className="h-24 text-center text-muted-foreground hover:bg-transparent">
+                      <TableCell colSpan={7} className="h-24 text-center text-muted-foreground hover:bg-transparent">
                         No reservations found.
                       </TableCell>
                     </TableRow>
@@ -177,6 +203,7 @@ export function AdminDashboard() {
               </Table>
             </div>
 
+            {/* Mobile cards */}
             <div className="md:hidden space-y-4">
               {reservations?.map((res) => (
                 <Card key={res.id} className="border-border/40 bg-card">
@@ -186,9 +213,20 @@ export function AdminDashboard() {
                         <CardTitle className="text-lg">{res.name}</CardTitle>
                         <div className="text-sm text-muted-foreground mt-1">{res.phone}</div>
                       </div>
-                      <Badge variant="outline" className={getStatusColor(res.status)}>
-                        {res.status}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className={getStatusColor(res.status)}>
+                          {res.status}
+                        </Badge>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
+                          onClick={() => setDeleteTargetId(res.id)}
+                          aria-label="Delete reservation"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0 space-y-4">
@@ -213,10 +251,7 @@ export function AdminDashboard() {
                       </div>
                     )}
                     <div className="pt-2 border-t border-border/40">
-                      <Select
-                        value={res.status}
-                        onValueChange={(val) => handleStatusChange(res.id, val)}
-                      >
+                      <Select value={res.status} onValueChange={(val) => handleStatusChange(res.id, val)}>
                         <SelectTrigger className="w-full bg-background">
                           <SelectValue placeholder="Change status" />
                         </SelectTrigger>
@@ -240,6 +275,28 @@ export function AdminDashboard() {
           </>
         )}
       </main>
+
+      {/* Delete confirmation dialog */}
+      <AlertDialog open={!!deleteTargetId} onOpenChange={(open) => { if (!open) setDeleteTargetId(null); }}>
+        <AlertDialogContent className="bg-card border-border/40">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete reservation?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this reservation? This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-background border-border/40">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 text-white hover:bg-red-700"
+              onClick={handleDeleteConfirm}
+              disabled={deleteMutation.isPending}
+            >
+              {deleteMutation.isPending ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

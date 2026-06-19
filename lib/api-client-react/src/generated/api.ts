@@ -266,6 +266,76 @@ export function useListReservations<TData = Awaited<ReturnType<typeof listReserv
 
 
 
+export const getDeleteReservationUrl = (id: string,) => {
+
+
+
+
+  return `/api/reservations/${id}`
+}
+
+/**
+ * @summary Delete a reservation (admin)
+ */
+export const deleteReservation = async (id: string, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteReservationUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteReservationMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReservation>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteReservation>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['deleteReservation'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteReservation>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteReservation(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteReservationMutationResult = NonNullable<Awaited<ReturnType<typeof deleteReservation>>>
+
+    export type DeleteReservationMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Delete a reservation (admin)
+ */
+export const useDeleteReservation = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReservation>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteReservation>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getDeleteReservationMutationOptions(options));
+    }
+
 export const getUpdateReservationUrl = (id: string,) => {
 
 

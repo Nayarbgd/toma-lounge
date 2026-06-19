@@ -60,6 +60,14 @@ export const ListReservationsResponse = zod.array(ListReservationsResponseItem)
 
 
 /**
+ * @summary Delete a reservation (admin)
+ */
+export const DeleteReservationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+
+/**
  * @summary Update reservation status (admin)
  */
 export const UpdateReservationParams = zod.object({

@@ -73,6 +73,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
   /reservations/{id}:
+    delete:
+      operationId: deleteReservation
+      tags: [reservations]
+      summary: Delete a reservation (admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Reservation deleted
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     patch:
       operationId: updateReservation
       tags: [reservations]
