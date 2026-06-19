@@ -359,3 +359,18 @@ button, a {
   min-height: 44px;
   min-width: 44px;
 }
+
+/* WhatsApp float animation */
+@keyframes wa-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+.wa-float {
+  animation: wa-float 3s ease-in-out infinite;
+}
+
+.wa-float:hover {
+  animation: none;
+  transform: scale(1.1);
+}
