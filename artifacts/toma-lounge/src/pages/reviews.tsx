@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import { Reveal } from "@/components/reveal";
 
 export function Reviews() {
   const reviews = [
@@ -34,7 +35,7 @@ export function Reviews() {
       <title>Reviews | Toma Lounge</title>
       <meta name="description" content="Read what our guests have to say about their experience at Toma Lounge, a premier Syrian restaurant and shisha lounge in Barsha Heights." />
       
-      <div className="text-center mb-16">
+      <Reveal variant="fadeUp" className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-serif font-bold text-secondary mb-4">Guest Experiences</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">Don't just take our word for it. Here is what our guests have to say.</p>
         
@@ -51,16 +52,16 @@ export function Reviews() {
             <span className="text-sm text-muted-foreground">Based on 231 Google Reviews</span>
           </div>
         </div>
-      </div>
+      </Reveal>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
         {reviews.map((review, idx) => (
           <motion.div 
             key={idx}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ delay: idx * 0.08, duration: 0.65, ease: "easeOut" }}
             className="bg-card border border-border p-8 rounded-2xl relative"
           >
             <div className="absolute top-0 right-8 -translate-y-1/2 text-6xl font-serif text-primary/20">"</div>

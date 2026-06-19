@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Reveal } from "@/components/reveal";
 
 export function Menu() {
   const categories = [
@@ -41,18 +42,19 @@ export function Menu() {
 
   return (
     <div className="container mx-auto px-4 py-16">
-      <div className="text-center mb-16">
+      <Reveal variant="fadeUp" className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-serif font-bold text-secondary mb-4">Our Menu</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">Authentic Levantine flavors crafted with premium ingredients.</p>
-      </div>
+      </Reveal>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
         {categories.map((category, idx) => (
           <motion.div 
             key={idx}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ delay: idx * 0.08, duration: 0.65, ease: "easeOut" }}
             className="space-y-8"
           >
             <h2 className="text-2xl font-serif font-bold text-primary border-b border-border/50 pb-4">{category.title}</h2>

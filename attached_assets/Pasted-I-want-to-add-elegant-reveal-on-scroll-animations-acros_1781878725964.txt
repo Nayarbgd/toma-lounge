@@ -1,0 +1,308 @@
+I want to add elegant "reveal on scroll" animations across the website.
+
+The goal is to make sections appear smoothly as the user scrolls, creating a premium and cinematic experience similar to luxury restaurants, hotels and high-end Dubai websites.
+
+IMPORTANT:
+The animations must be subtle, highly optimized and feel equally smooth on desktop and mobile devices.
+
+The website should never feel laggy or heavy while scrolling.
+
+Tech stack:
+React + Vite + TypeScript
+Tailwind CSS
+Framer Motion is already installed.
+
+=================================================
+ANIMATION PHILOSOPHY
+====================
+
+The experience should feel:
+
+* Premium
+* Elegant
+* Cinematic
+* Calm
+* Sophisticated
+* Lightweight
+* Responsive
+
+Elements should gently reveal themselves as the user scrolls, almost like magic, but without calling attention to the animation itself.
+
+The user should feel smoothness, not effects.
+
+=================================================
+MOBILE-FIRST PERFORMANCE REQUIREMENTS
+=====================================
+
+Performance is a top priority.
+
+The animations must behave smoothly on:
+
+* Desktop
+* Tablets
+* iPhone
+* Android devices
+* Low-powered devices
+
+Use:
+
+* Framer Motion
+* Intersection Observer
+* whileInView
+* viewport={{ once: true, amount: 0.20 }}
+
+Animations should trigger ONLY ONCE.
+
+Do NOT continuously animate while scrolling.
+
+Avoid:
+
+* Continuous scroll listeners
+* requestAnimationFrame loops
+* heavy parallax
+* expensive blur animations
+* repeated re-renders
+* large transforms
+* large shadows during animation
+* animation libraries on top of Framer Motion
+
+Respect:
+
+prefers-reduced-motion
+
+If the user has reduced-motion enabled:
+
+* disable translations
+* disable scaling
+* use simple fade only
+
+=================================================
+GPU OPTIMIZATION
+================
+
+Animations should use only:
+
+* opacity
+* transform
+* translateX
+* translateY
+* scale
+
+Avoid animating:
+
+* width
+* height
+* top
+* left
+* box-shadow
+* filter
+* backdrop-filter
+
+Use:
+
+will-change:
+transform, opacity;
+
+where appropriate.
+
+=================================================
+CREATE REUSABLE COMPONENT
+=========================
+
+Create:
+
+<Reveal>
+
+Props:
+
+* variant
+* delay
+* duration
+* children
+
+Supported variants:
+
+fadeUp
+fadeLeft
+fadeRight
+zoomIn
+
+=================================================
+ANIMATION SETTINGS
+==================
+
+Fade Up
+
+initial:
+opacity: 0
+y: 30
+
+animate:
+opacity: 1
+y: 0
+
+duration:
+0.65s
+
+---
+
+Fade Left
+
+initial:
+opacity: 0
+x: -30
+
+animate:
+opacity: 1
+x: 0
+
+duration:
+0.65s
+
+---
+
+Fade Right
+
+initial:
+opacity: 0
+x: 30
+
+animate:
+opacity: 1
+x: 0
+
+duration:
+0.65s
+
+---
+
+Zoom In
+
+initial:
+opacity: 0
+scale: 0.98
+
+animate:
+opacity: 1
+scale: 1
+
+duration:
+0.55s
+
+=================================================
+MOBILE RULES
+============
+
+On screens below 768px:
+
+Reduce translations:
+
+Desktop:
+30px
+
+Mobile:
+15px
+
+Reduce duration:
+
+Desktop:
+650ms
+
+Mobile:
+450ms
+
+Disable stagger delays larger than:
+
+100ms
+
+Never block scrolling.
+
+Animations must never create:
+
+* frame drops
+* delayed touch response
+* stuttering
+* layout shifts
+
+Scrolling should remain at 60fps whenever possible.
+
+=================================================
+STAGGER EFFECT
+==============
+
+Cards and grids:
+
+0ms
+80ms
+160ms
+240ms
+
+On mobile:
+
+0ms
+50ms
+100ms
+
+Avoid long cascades.
+
+=================================================
+WHERE TO USE ANIMATIONS
+=======================
+
+Hero:
+fadeUp
+
+About:
+text → fadeLeft
+image → fadeRight
+
+Menu cards:
+fadeUp + stagger
+
+Gallery:
+zoomIn
+
+Statistics:
+fadeUp
+
+Reservation:
+text → fadeLeft
+form → fadeRight
+
+Footer:
+fadeUp
+
+Dashboard:
+
+Do NOT animate:
+
+* tables
+* reservation rows
+* large datasets
+* filters
+* charts during updates
+
+Animate only:
+
+* stat cards
+* analytics cards
+* empty states
+
+=================================================
+FINAL GOAL
+==========
+
+The website should feel like a premium Dubai restaurant website where sections softly reveal themselves as the user scrolls.
+
+The experience must remain:
+
+* smooth
+* responsive
+* mobile friendly
+* cinematic
+* elegant
+* performant
+
+Animations should enhance the experience without ever hurting usability or scrolling performance.
+
+Implement this as reusable animation utilities/components that can be used throughout the entire application.

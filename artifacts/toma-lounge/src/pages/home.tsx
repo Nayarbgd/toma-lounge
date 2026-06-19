@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Star, Clock, MapPin, Phone, Flame, Wind, Users, Moon } from "lucide-react";
 import { motion } from "framer-motion";
+import { Reveal } from "@/components/reveal";
 
 export function Home() {
   const structuredData = {
@@ -115,10 +116,10 @@ export function Home() {
       {/* Featured Section */}
       <section className="py-16 md:py-24 bg-card">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <Reveal variant="fadeUp" className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-4">Our Signatures</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">Authentic Syrian recipes prepared with passion and premium ingredients.</p>
-          </div>
+          </Reveal>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -128,10 +129,10 @@ export function Home() {
             ].map((item, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.2 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ delay: i * 0.08, duration: 0.65, ease: "easeOut" }}
                 className="group relative overflow-hidden rounded-xl border border-border/50"
               >
                 <div className="aspect-[4/3] overflow-hidden">
@@ -155,7 +156,7 @@ export function Home() {
         </div>
         
         <div className="container relative z-10 mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="md:w-1/2">
+          <Reveal variant="fadeLeft" className="md:w-1/2">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-secondary mb-6">Late Night Lounge</h2>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
               Experience the perfect evening ambiance. Premium shisha starting from AED 40, paired with our signature Mint Margherita or Americano. Open until 3 AM every day.
@@ -163,17 +164,17 @@ export function Home() {
             <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90" asChild>
               <Link href="/menu">View Shisha Menu</Link>
             </Button>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Why Toma Lounge */}
       <section className="py-16 md:py-24 bg-card">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <Reveal variant="fadeUp" className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-4">Why Toma Lounge</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">Everything you need for a perfect evening — from the first bite to the last smoke.</p>
-          </div>
+          </Reveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { icon: <Flame className="w-7 h-7 text-primary" />, title: "Charcoal Grilled", desc: "Every cut slow-cooked over open charcoal for maximum flavour and tenderness." },
@@ -183,10 +184,10 @@ export function Home() {
             ].map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ delay: i * 0.08, duration: 0.65, ease: "easeOut" }}
                 className="flex flex-col items-center text-center gap-4 p-8 rounded-2xl border border-border/50 bg-background"
               >
                 <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
@@ -203,7 +204,7 @@ export function Home() {
       {/* Reviews teaser */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <Reveal variant="fadeUp" className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-secondary mb-4">What Our Guests Say</h2>
             <div className="flex items-center justify-center gap-2">
               <div className="flex text-secondary">
@@ -212,7 +213,7 @@ export function Home() {
               <span className="font-medium text-foreground">4.4</span>
               <span className="text-muted-foreground text-sm">· 231 Google Reviews</span>
             </div>
-          </div>
+          </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-10">
             {[
@@ -221,10 +222,10 @@ export function Home() {
             ].map((review, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ delay: i * 0.08, duration: 0.65, ease: "easeOut" }}
                 className="bg-card border border-border p-8 rounded-2xl relative"
               >
                 <div className="absolute top-0 right-8 -translate-y-1/2 text-6xl font-serif text-primary/20">"</div>
@@ -257,7 +258,7 @@ export function Home() {
       <section className="py-16 md:py-24 bg-card border-t border-border">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="md:w-1/2 space-y-6">
+            <Reveal variant="fadeLeft" className="md:w-1/2 space-y-6">
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground">Come Find Us</h2>
               <p className="text-muted-foreground leading-relaxed">In the heart of Barsha Heights, steps from the Cayan Business Center. Whether you're coming for lunch, a family dinner, or a late-night shisha session — we're always ready.</p>
               <div className="space-y-3">
@@ -282,8 +283,8 @@ export function Home() {
                   <Link href="/menu">View Full Menu</Link>
                 </Button>
               </div>
-            </div>
-            <div className="md:w-1/2 rounded-2xl overflow-hidden border border-border h-72 w-full">
+            </Reveal>
+            <Reveal variant="fadeRight" className="md:w-1/2 rounded-2xl overflow-hidden border border-border h-72 w-full">
               <iframe
                 title="Toma Lounge Map"
                 src="https://maps.google.com/maps?q=Toma+Lounge+Cayan+Business+Center+Barsha+Heights+Dubai&output=embed"
@@ -294,7 +295,7 @@ export function Home() {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>

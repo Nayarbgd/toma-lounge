@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Reveal } from "@/components/reveal";
 import { format, addDays, isToday, isTomorrow } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -267,15 +268,15 @@ export function Contact() {
 
   return (
     <div className="container mx-auto px-4 py-16">
-      <div className="text-center mb-16">
+      <Reveal variant="fadeUp" className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">Contact & Reservations</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">Book your table for an unforgettable dining and lounge experience.</p>
-      </div>
+      </Reveal>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
         {/* ── Left: Contact Info ── */}
-        <div className="space-y-8">
+        <Reveal variant="fadeLeft" className="space-y-8">
           <div className="bg-card p-8 rounded-xl border border-border">
             <h2 className="text-2xl font-serif font-bold text-secondary mb-6">Visit Us</h2>
             <div className="space-y-6">
@@ -327,10 +328,10 @@ export function Contact() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-        </div>
+        </Reveal>
 
         {/* ── Right: Reservation Wizard ── */}
-        <div className="bg-card rounded-xl border border-border p-6 md:p-8">
+        <Reveal variant="fadeRight" className="bg-card rounded-xl border border-border p-6 md:p-8">
           <div className="flex items-center gap-2 mb-6">
             <Sparkles className="w-5 h-5 text-primary" />
             <h2 className="text-2xl font-serif font-bold text-primary">Book a Table</h2>
@@ -546,7 +547,7 @@ export function Contact() {
               </div>
             </>
           )}
-        </div>
+        </Reveal>
       </div>
     </div>
   );
