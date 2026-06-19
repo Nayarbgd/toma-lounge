@@ -4,28 +4,28 @@ import { Star } from "lucide-react";
 export function Reviews() {
   const reviews = [
     {
-      name: "Ahmed K.",
+      name: "Nur Amalina",
       rating: 5,
-      date: "3 weeks ago",
-      text: "The mixed grill platter was outstanding — perfectly charred, incredibly tender. And they brought complimentary hummus and olives without even asking. Will be back."
+      date: "5 months ago",
+      text: "Had a lovely dining experience here. We ordered the carbonara spaghetti and a pizza, and both were really satisfying. The carbonara was creamy, well-seasoned, and comforting, while the pizza had a nicely baked crust with generous toppings. Everything tasted fresh and was served hot. A special mention to Captain Maher, who was incredibly nice and helpful, his friendly service really made our visit even better. The atmosphere was pleasant and welcoming. Definitely a place I'd come back to again! Xoxo"
     },
     {
-      name: "Sara M.",
+      name: "Tomson Issac",
       rating: 5,
       date: "1 month ago",
-      text: "We booked for a Ramadan iftar and they handled our group of 20 perfectly. The buffet setup was generous and well-organized. Highly recommend for group bookings."
+      text: "We ordered the full grilled chicken and the mixed grill platter. Both the meat and chicken were incredibly tender! The best part was the complimentary side dishes—they served us hummus, olives, and pickles, which you don't usually get at many other restaurants. Also, the 40 AED shisha is definitely worth it in Barsha heights."
     },
     {
-      name: "James T.",
-      rating: 4,
-      date: "2 weeks ago",
-      text: "Great shisha selection, good quality. The atmosphere after midnight is really something — feels like the whole of Tecom is here. Stayed until closing."
-    },
-    {
-      name: "Nour F.",
+      name: "Alam Mohammed",
       rating: 5,
-      date: "5 days ago",
-      text: "Best chicken shawarma I've had in Dubai. The complimentary sides — pickles, olives, bread — make it feel like a proper home-cooked spread. Solid value."
+      date: "4 months ago",
+      text: "10/10 for these guys! Randomly ordered from here as we were at the Ramada opposite. The portions, presentation and packaging was 10/10. 2 chicken and beef sharwarma meals above cost only £11"
+    },
+    {
+      name: "Sami Ibrahim",
+      rating: 5,
+      date: "5 months ago",
+      text: "My visit was exceptional. The place is elegant and comfortable, with a calm, refined atmosphere. The food was excellent in quality, flavor, and presentation. The service exceeded expectations, especially thanks to Captain Maher, whose professionalism, attentiveness, and hospitality made the experience even better. I highly recommend Toma Lounge."
     }
   ];
 
