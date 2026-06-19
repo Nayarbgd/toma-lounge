@@ -5,10 +5,35 @@ import { Button } from "./ui/button";
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur-[12px]" style={{ background: "rgba(0,0,0,0.80)" }}>
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="font-bold text-xl tracking-wider text-primary">
-            TOMA LOUNGE
+          <Link href="/" className="group flex items-center gap-3 select-none">
+            <img
+              src="/images/logo.png"
+              alt="Toma Lounge Logo"
+              fetchPriority="high"
+              className="w-auto object-contain transition-all duration-[250ms] ease-in-out group-hover:scale-[1.03]"
+              style={{
+                height: "44px",
+                filter: "drop-shadow(0 0 0px rgba(32,200,245,0))",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.filter = "drop-shadow(0 0 8px rgba(32,200,245,0.18))")}
+              onMouseLeave={e => (e.currentTarget.style.filter = "drop-shadow(0 0 0px rgba(32,200,245,0))")}
+            />
+            <div className="flex flex-col justify-center leading-none">
+              <span
+                className="font-bold tracking-[0.04em]"
+                style={{ fontFamily: "'Cinzel', serif", color: "#20C8F5", fontSize: "clamp(14px, 1.4vw, 18px)", fontWeight: 700 }}
+              >
+                TOMA LOUNGE
+              </span>
+              <span
+                className="hidden sm:block mt-0.5"
+                style={{ fontFamily: "'Inter', sans-serif", color: "#B89663", fontSize: "11px", fontWeight: 400, letterSpacing: "0.02em" }}
+              >
+                Where Taste Meets Comfort
+              </span>
+            </div>
           </Link>
           
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">

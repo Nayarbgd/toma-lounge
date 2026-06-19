@@ -1,0 +1,113 @@
+I have added a new Toma Lounge logo asset.
+
+I want you to integrate it into the website header/navbar professionally.
+
+Requirements:
+
+1. Place the logo on the TOP LEFT of the navbar, next to the restaurant name.
+
+2. The layout should be:
+
+[ Circular Logo ]   TOMA LOUNGE
+                    Where Taste Meets Comfort
+
+3. Design goals:
+- Premium
+- Elegant
+- Modern Middle Eastern lounge
+- High-end restaurant aesthetic
+- Mobile friendly
+- Consistent with the black, turquoise and gold branding.
+
+4. Logo specifications:
+- Circular logo
+- Height: 44px desktop
+- Height: 38px tablet
+- Height: 34px mobile
+- Width should scale automatically.
+- Use object-contain.
+- Never crop the logo.
+
+5. Text specifications:
+
+Restaurant Name:
+TOMA LOUNGE
+
+Font:
+Cinzel, serif
+
+Color:
+#20C8F5
+
+Weight:
+700
+
+Letter spacing:
+0.04em
+
+Tagline:
+Where Taste Meets Comfort
+
+Font:
+Inter, sans-serif
+
+Color:
+#B89663
+
+Size:
+11-12px
+
+Weight:
+400
+
+6. Alignment:
+- Logo and text vertically centered.
+- Small gap between logo and text (12px).
+- Entire brand block aligned to the left.
+- Preserve existing navigation links and layout.
+
+7. Hover effect:
+Very subtle.
+
+On hover:
+- Turquoise glow around logo:
+0 0 20px rgba(32,200,245,0.18)
+
+- Slight scale:
+transform: scale(1.03);
+
+transition:
+250ms ease;
+
+Do NOT use large animations.
+
+8. Navbar styling:
+Background:
+rgba(0,0,0,0.80)
+
+Backdrop blur:
+12px
+
+Keep the navbar elegant and premium.
+
+9. Mobile behavior:
+If space becomes limited:
+
+[Logo] TOMA LOUNGE
+
+Hide the tagline:
+"Where Taste Meets Comfort"
+
+on screens smaller than 640px.
+
+10. Accessibility:
+- Add alt="Toma Lounge Logo"
+- Prevent layout shifts.
+- Lazy load only if it does not affect LCP.
+
+11. Use the existing design system and Tailwind classes where possible.
+Do not refactor unrelated code.
+Do not change the navbar structure.
+Only improve the branding section professionally.
+
+The final result should look similar to the branding of premium Dubai restaurants and shisha lounges, giving the feeling of an upscale yet welcoming Syrian lounge.
