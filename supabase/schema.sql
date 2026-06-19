@@ -17,6 +17,12 @@ CREATE TABLE IF NOT EXISTS reservations (
   created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Grant table-level privileges to the roles used by this app.
+-- RLS policies (below) control row-level access, but Postgres also requires
+-- explicit GRANT for the role to touch the table at all.
+GRANT INSERT ON public.reservations TO anon;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.reservations TO service_role;
+
 -- Enable Row Level Security so only the right roles can access this table
 ALTER TABLE reservations ENABLE ROW LEVEL SECURITY;
 
