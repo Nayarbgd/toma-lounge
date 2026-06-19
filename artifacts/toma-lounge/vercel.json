@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd ../../ && pnpm install && pnpm --filter @workspace/toma-lounge run build",
+  "outputDirectory": "dist/public",
+  "installCommand": "echo skip",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
