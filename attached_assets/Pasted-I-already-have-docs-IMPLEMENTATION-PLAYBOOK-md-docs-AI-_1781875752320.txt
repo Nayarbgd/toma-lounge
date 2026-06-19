@@ -1,0 +1,259 @@
+I already have:
+
+* /docs/IMPLEMENTATION_PLAYBOOK.md
+* /docs/AI_CONTEXT.md
+
+I need you to generate ONE additional document only:
+
+/docs/PROJECT_BOOTSTRAP_PROMPT.md
+
+DO NOT MODIFY ANY CODE.
+DO NOT INSTALL DEPENDENCIES.
+DO NOT CREATE FILES OTHER THAN THIS DOCUMENT.
+
+=========================================================
+PURPOSE
+=======
+
+This document will be used in FUTURE PROJECTS to bootstrap new client implementations quickly.
+
+It must be INDUSTRY-AGNOSTIC and reusable for:
+
+* Restaurants
+* Clinics
+* Gyms
+* Barbershops
+* Law firms
+* Agencies
+* Salons
+* Service businesses
+* Future business types not yet defined.
+
+The goal is:
+
+CUSTOM FRONTEND
++
+REUSABLE BUSINESS ENGINE
+
+The AI should understand that every new project has:
+
+1. Unique branding and UI
+2. Shared business systems
+
+Examples of reusable systems:
+
+* Booking engines
+* Reservations
+* Appointment scheduling
+* Admin dashboards
+* CRM
+* Authentication
+* Analytics
+* Notifications
+* Emails
+* Payments
+* Automations
+* Calendar management
+* Forms
+* Customer management
+
+=========================================================
+THE DOCUMENT MUST CONTAIN:
+==========================
+
+# SECTION 1
+
+Bootstrap Mission
+
+Explain:
+
+The purpose is to analyze an existing codebase and determine whether reusable modules can be integrated instead of rebuilding systems from scratch.
+
+=========================================================
+
+# SECTION 2
+
+Mandatory Reading Order
+
+The AI must always read, in this order:
+
+1. IMPLEMENTATION_PLAYBOOK.md
+2. AI_CONTEXT.md
+3. ARCHITECTURE.md (if present)
+4. TROUBLESHOOTING.md (if present)
+5. CHANGELOG.md (if present)
+
+=========================================================
+
+# SECTION 3
+
+Initial Project Analysis Checklist
+
+The AI must inspect:
+
+* folder structure
+* package manager
+* dependencies
+* frontend framework
+* backend framework
+* database
+* auth provider
+* deployment method
+* environment variables
+* existing modules
+* reusable components
+
+=========================================================
+
+# SECTION 4
+
+Information To Request From User
+
+Generate a questionnaire asking:
+
+Business Name:
+Industry:
+Target Audience:
+Services:
+Pages Required:
+Dashboard Requirements:
+Booking Requirements:
+Email Requirements:
+Automations:
+Payments:
+Notifications:
+Third-party Integrations:
+Brand Colors:
+Fonts:
+Logo:
+Domain:
+Owner Email:
+Admin Roles:
+Future Features:
+
+=========================================================
+
+# SECTION 5
+
+Reusable Module Detection
+
+The AI must determine whether existing modules can be reused:
+
+Authentication
+Dashboard
+Reservations
+Bookings
+CRM
+Analytics
+Notifications
+Forms
+Payments
+Scheduling
+Calendar
+Customer Management
+
+The default assumption should be:
+
+Reuse first.
+Build second.
+
+=========================================================
+
+# SECTION 6
+
+Implementation Phases
+
+Phase 1:
+Analyze existing architecture.
+
+Phase 2:
+Generate implementation plan.
+
+Phase 3:
+Generate database proposal.
+
+Phase 4:
+Generate API proposal.
+
+Phase 5:
+Generate dashboard proposal.
+
+Phase 6:
+Generate integrations proposal.
+
+Phase 7:
+Implement incrementally.
+
+=========================================================
+
+# SECTION 7
+
+Rules
+
+Never:
+
+* refactor unrelated code
+* replace architecture without justification
+* break working functionality
+* introduce unnecessary dependencies
+* hardcode client information
+* create large changes in one step
+* assume files exist without verifying
+
+Always:
+
+* explain before changing
+* preserve backwards compatibility
+* document new env variables
+* prefer configuration over hardcoding
+* make incremental changes
+* diagnose before fixing
+
+=========================================================
+
+# SECTION 8
+
+Master Bootstrap Prompt Template
+
+Generate a reusable prompt that can be pasted into any future Replit project.
+
+Example usage:
+
+"Read all documentation files and analyze the codebase.
+
+This project is for:
+
+Business:
+[NAME]
+
+Industry:
+[TYPE]
+
+Features:
+[FEATURES]
+
+Branding:
+[DETAILS]
+
+Determine:
+
+1. What can be reused.
+2. What needs to be built.
+3. Architecture proposal.
+4. Database proposal.
+5. Dashboard proposal.
+6. Integration plan.
+7. Step-by-step implementation roadmap.
+
+Do not modify code until the plan is approved."
+
+=========================================================
+
+Output only:
+
+/docs/PROJECT_BOOTSTRAP_PROMPT.md
+
+Documentation only.
+No code changes.
+No refactors.
+No dependency installations.
