@@ -63,6 +63,18 @@ export function ReservationsTab({ allReservations, authHeaders, isLoading }: Pro
   const updateMutation = useUpdateReservation({ request: { headers: authHeaders } });
   const deleteMutation = useDeleteReservation({ request: { headers: authHeaders } });
 
+  const handleStatusChange = useCallback((id: string, newStatus: string) => {
+    updateMutation.mutate({ id, data: { status: newStatus as any } }, {
+      onSuccess: (updated: Reservation) => {
+        queryClient.setQueryData<Reservation[]>(queryKey, (prev) =>
+          prev ? prev.map(r => r.id === updated.id ? updated : r) : prev
+        );
+        toast({ title: "Status updated" });
+      },
+      onError: (e: Error) => toast({ title: "Update failed", description: e.message, variant: "destructive" }),
+    });
+  }, [updateMutation, queryClient, queryKey, toast]);
+
   const filteredReservations = useMemo(() => {
     let list = [...allReservations];
     if (dateFilter === "today") {
@@ -90,13 +102,6 @@ export function ReservationsTab({ allReservations, authHeaders, isLoading }: Pro
     });
     return list;
   }, [allReservations, dateFilter, customStart, customEnd, statusFilters, searchQuery, sortField, sortDir]);
-
-  const handleStatusChange = useCallback((id: string, newStatus: string) => {
-    updateMutation.mutate({ id, data: { status: newStatus as any } }, {
-      onSuccess: () => toast({ title: "Status updated" }),
-      onError: (e) => toast({ title: "Update failed", description: e.message, variant: "destructive" }),
-    });
-  }, [updateMutation, toast]);
 
   const handleDeleteConfirm = () => {
     if (!deleteTargetId) return;

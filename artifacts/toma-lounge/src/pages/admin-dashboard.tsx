@@ -81,10 +81,15 @@ export function AdminDashboard() {
 
   const handleStatusChange = useCallback((id: string, newStatus: string) => {
     updateMutation.mutate({ id, data: { status: newStatus as any } }, {
-      onSuccess: () => toast({ title: "Status updated" }),
-      onError: (e) => toast({ title: "Update failed", description: e.message, variant: "destructive" }),
+      onSuccess: (updated: Reservation) => {
+        queryClient.setQueryData<Reservation[]>(queryKey, (prev) =>
+          prev ? prev.map(r => r.id === updated.id ? updated : r) : prev
+        );
+        toast({ title: "Status updated" });
+      },
+      onError: (e: Error) => toast({ title: "Update failed", description: e.message, variant: "destructive" }),
     });
-  }, [updateMutation, toast]);
+  }, [updateMutation, queryClient, queryKey, toast]);
 
   // ── Realtime ──────────────────────────────────────────────────────────────
   const handleInsert = useCallback((record: Record<string, unknown>) => {
