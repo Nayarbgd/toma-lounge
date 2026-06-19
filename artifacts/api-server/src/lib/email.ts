@@ -1,9 +1,16 @@
 import { Resend } from "resend";
 import { logger } from "./logger.js";
 
+// ── TEMPORARY DIAGNOSTIC LOGS ─────────────────────────────────────────────────
+logger.info({ loaded: !!process.env.RESEND_API_KEY }, "DIAG: RESEND_API_KEY loaded");
+logger.info({ loaded: !!process.env.OWNER_EMAIL, value: process.env.OWNER_EMAIL ?? "(not set)" }, "DIAG: OWNER_EMAIL loaded");
+// ─────────────────────────────────────────────────────────────────────────────
+
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
+
+logger.info({ initialized: resend !== null }, "DIAG: Resend client initialized");
 
 const OWNER_EMAIL = process.env.OWNER_EMAIL;
 
@@ -133,6 +140,8 @@ function buildOwnerEmailHtml(data: NewReservationEmailData): string {
 }
 
 export async function sendNewReservationEmail(data: NewReservationEmailData): Promise<void> {
+  logger.info({ guest: data.name, resendReady: resend !== null, ownerEmailSet: !!OWNER_EMAIL }, "DIAG: Owner email function called");
+
   if (!resend) {
     logger.warn("RESEND_API_KEY not set — skipping owner notification email");
     return;
@@ -146,7 +155,9 @@ export async function sendNewReservationEmail(data: NewReservationEmailData): Pr
   const formattedDate = formatDate(data.date);
   const subject = `New Reservation — ${data.name} — ${formattedDate} at ${formattedTime}`;
 
-  const { error } = await resend.emails.send({
+  logger.info({ to: OWNER_EMAIL, subject }, "DIAG: Calling resend.emails.send (owner notification)");
+
+  const { data: resendData, error } = await resend.emails.send({
     from: "Toma Lounge <onboarding@resend.dev>",
     to: OWNER_EMAIL,
     subject,
@@ -154,10 +165,12 @@ export async function sendNewReservationEmail(data: NewReservationEmailData): Pr
   });
 
   if (error) {
+    logger.error({ resendError: error }, "DIAG: Resend API returned an error (owner notification)");
     logger.error({ err: error }, "Failed to send owner notification email");
     throw new Error(error.message);
   }
 
+  logger.info({ resendResponse: resendData }, "DIAG: Resend API success (owner notification)");
   logger.info({ to: OWNER_EMAIL, guest: data.name }, "Owner notification email sent");
 }
 
@@ -294,12 +307,16 @@ function buildConfirmedEmailHtml(data: ReservationConfirmedEmailData): string {
 export async function sendReservationConfirmedEmail(
   data: ReservationConfirmedEmailData
 ): Promise<void> {
+  logger.info({ guest: data.name, to: data.guestEmail, resendReady: resend !== null }, "DIAG: Guest confirmation email function called");
+
   if (!resend) {
     logger.warn("RESEND_API_KEY not set — skipping confirmed email");
     return;
   }
 
-  const { error } = await resend.emails.send({
+  logger.info({ to: data.guestEmail }, "DIAG: Calling resend.emails.send (guest confirmation)");
+
+  const { data: resendData, error } = await resend.emails.send({
     from: "Toma Lounge <onboarding@resend.dev>",
     to: data.guestEmail,
     subject: "Reservation Confirmed — Toma Lounge",
@@ -307,9 +324,11 @@ export async function sendReservationConfirmedEmail(
   });
 
   if (error) {
+    logger.error({ resendError: error }, "DIAG: Resend API returned an error (guest confirmation)");
     logger.error({ err: error }, "Failed to send confirmed email to guest");
     throw new Error(error.message);
   }
 
+  logger.info({ resendResponse: resendData }, "DIAG: Resend API success (guest confirmation)");
   logger.info({ to: data.guestEmail, guest: data.name }, "Reservation confirmed email sent to guest");
 }
