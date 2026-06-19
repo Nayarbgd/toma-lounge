@@ -1,0 +1,346 @@
+PROJECT CONTEXT
+
+This is a production-ready full-stack restaurant reservation application called Toma Lounge.
+
+Tech stack:
+
+* Frontend: React 18 + Vite + TypeScript
+* UI: Tailwind + shadcn/ui
+* State management: TanStack Query
+* Router: Wouter
+* Backend: Express 5 + TypeScript
+* Database: Supabase PostgreSQL
+* Auth: Supabase Auth
+* Realtime: Supabase Realtime
+* Monorepo: pnpm workspaces
+
+IMPORTANT RULES
+
+1. DO NOT refactor unrelated code.
+2. DO NOT change the existing reservation API contracts.
+3. DO NOT remove or modify existing features.
+4. DO NOT rename existing files unless absolutely necessary.
+5. DO NOT break current realtime subscriptions.
+6. DO NOT change authentication flow.
+7. Preserve TypeScript strict mode.
+8. Prefer additive changes over destructive changes.
+9. Create migrations incrementally.
+10. If a schema change is required, explain the migration before applying it.
+
+GOAL
+
+Upgrade the admin dashboard into a more complete restaurant management system while keeping the current reservation flow fully functional.
+
+==================================================
+FEATURE 1 — BUSINESS HOURS MANAGEMENT
+=====================================
+
+Create a new admin section:
+
+Settings → Business Hours
+
+Requirements:
+
+* Configure opening and closing hours per day.
+* Allow marking a day as Closed.
+* Support multiple time windows in the future (example:
+  12:00-16:00 and 18:00-01:00).
+
+Suggested table:
+
+business_hours
+
+* id
+* day_of_week
+* is_closed
+* open_time
+* close_time
+* created_at
+
+Reservation form requirements:
+
+* Disable dates/times outside business hours.
+* Show:
+  "Restaurant Closed"
+  or
+  "Reservations unavailable for this time."
+
+Admin UI:
+
+Weekly grid:
+
+Monday
+Tuesday
+Wednesday
+...
+
+With toggles and time pickers.
+
+==================================================
+FEATURE 2 — BLOCKED DATES
+=========================
+
+Create:
+
+blocked_dates
+
+Columns:
+
+* id
+* date
+* reason
+* created_at
+
+Examples:
+
+2026-12-31 → New Year's Event
+2026-10-20 → Private Party
+
+Admin:
+
+Settings → Blocked Dates
+
+Actions:
+
+* Add blocked date
+* Delete blocked date
+* Optional reason field
+
+Reservation form:
+
+Prevent bookings on blocked dates.
+
+Display:
+
+"This date is unavailable."
+
+==================================================
+FEATURE 3 — BLOCKED TIME SLOTS
+==============================
+
+Create:
+
+blocked_time_slots
+
+Columns:
+
+* id
+* date
+* start_time
+* end_time
+* reason
+* created_at
+
+Examples:
+
+2026-06-25
+20:00
+22:00
+VIP Event
+
+Reservation form:
+
+Disable reservations that overlap blocked periods.
+
+Admin UI:
+
+Calendar list:
+
+Date
+Start
+End
+Reason
+
+==================================================
+FEATURE 4 — TABLE MANAGEMENT
+============================
+
+Create:
+
+restaurant_tables
+
+Columns:
+
+* id
+* name
+* capacity
+* is_active
+* created_at
+
+Examples:
+
+Table 1 → 2 seats
+Table 2 → 4 seats
+Table 3 → 6 seats
+
+Create:
+
+table_assignments
+
+Columns:
+
+* id
+* reservation_id
+* table_id
+* assigned_at
+
+Rules:
+
+* Reservations should optionally auto-assign tables based on party size.
+* Admin can manually change assignments.
+* Prevent assigning the same table to overlapping reservations.
+
+Dashboard:
+
+Add a "Table" column.
+
+Display:
+
+Table 3
+Table 5
+Unassigned
+
+==================================================
+FEATURE 5 — CALENDAR VIEW
+=========================
+
+Add a second dashboard view:
+
+Reservations
+[Table View] [Calendar View]
+
+Calendar requirements:
+
+* Day View
+* Week View
+
+Display reservations as calendar events.
+
+Event card:
+
+Guest Name
+Time
+Party Size
+Status
+Assigned Table
+
+Allow:
+
+* click event → open reservation details
+* drag and drop is NOT required in V1.
+
+Use a lightweight library only if necessary.
+
+Do not introduce large dependencies.
+
+==================================================
+FEATURE 6 — DASHBOARD ANALYTICS
+===============================
+
+Create analytics cards:
+
+1. Today's Reservations
+2. This Week's Reservations
+3. Pending Reservations
+4. Upcoming 2 Hours
+5. Occupancy Rate
+6. Cancellation Rate
+7. Repeat Guests
+8. Most Popular Time Slot
+
+All analytics should be calculated client-side whenever possible.
+
+No unnecessary API calls.
+
+Add charts:
+
+Reservations by Hour
+Reservations by Day
+
+Prefer Recharts.
+
+==================================================
+FEATURE 7 — ONLINE RESERVATIONS TOGGLE
+======================================
+
+Create:
+
+restaurant_settings
+
+Columns:
+
+* id
+* reservations_enabled
+* created_at
+* updated_at
+
+Dashboard:
+
+Large switch:
+
+Accepting Online Reservations
+
+ON / OFF
+
+If OFF:
+
+Public reservation page:
+
+* Disable submit button
+* Show message:
+
+"Online reservations are temporarily unavailable. Please contact us directly."
+
+Admin can toggle instantly.
+
+==================================================
+UX REQUIREMENTS
+
+Create a new Dashboard section:
+
+Overview
+Reservations
+Calendar
+Tables
+Analytics
+Settings
+
+Inside Settings:
+
+* Business Hours
+* Blocked Dates
+* Blocked Time Slots
+* Reservation Availability
+
+Use shadcn/ui components.
+
+Maintain current dark theme.
+
+Keep mobile responsiveness.
+
+==================================================
+IMPLEMENTATION STRATEGY
+=======================
+
+Work in phases.
+
+Phase 1:
+Create database tables and migrations only.
+
+Phase 2:
+Create backend services and APIs.
+
+Phase 3:
+Create admin UI.
+
+Phase 4:
+Integrate public reservation form validation.
+
+Phase 5:
+Test edge cases.
+
+After each phase, stop and explain changes before continuing.
+
+DO NOT perform large refactors.
+DO NOT remove existing functionality.
+DO NOT break current reservations, auth, emails, realtime subscriptions, or dashboard statistics.
