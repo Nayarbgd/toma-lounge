@@ -3,13 +3,15 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Toma Lounge API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: reservations
+    description: Reservation operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,45 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /reservations:
+    post:
+      operationId: createReservation
+      tags: [reservations]
+      summary: Create a reservation
+      description: Submit a table reservation request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReservationInput"
+      responses:
+        "201":
+          description: Reservation created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reservation"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      operationId: listReservations
+      tags: [reservations]
+      summary: List all reservations
+      description: Get all reservations (admin)
+      responses:
+        "200":
+          description: List of reservations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reservation"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +74,65 @@ components:
           type: string
       required:
         - status
-
+    ReservationInput:
+      type: object
+      required:
+        - name
+        - phone
+        - date
+        - partySize
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+          minLength: 5
+          maxLength: 30
+        date:
+          type: string
+          description: Reservation date (ISO 8601)
+        partySize:
+          type: integer
+          minimum: 1
+          maximum: 50
+        occasion:
+          type: ["string", "null"]
+          maxLength: 200
+        notes:
+          type: ["string", "null"]
+          maxLength: 500
+    Reservation:
+      type: object
+      required:
+        - id
+        - name
+        - phone
+        - date
+        - partySize
+        - createdAt
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        date:
+          type: string
+        partySize:
+          type: integer
+        occasion:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string

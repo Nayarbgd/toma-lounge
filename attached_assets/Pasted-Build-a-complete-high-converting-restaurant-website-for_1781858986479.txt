@@ -1,0 +1,61 @@
+Build a complete, high-converting restaurant website for "Toma Lounge" located in Cayan Business Center, Al Thanyah First, Barsha Heights (Tecom), Dubai, United Arab Emirates. This is a revenue-generating business asset, not just a visually attractive website.
+
+=== BRAND IDENTITY ===
+Name: Toma Lounge
+Tagline (from logo): "Where Taste Meets Comfort"
+Category: Syrian / Middle Eastern restaurant & shisha lounge
+Instagram: @toma_lounge_dubai (21.9K followers)
+Phone: 058 109 5540 (also listed: 04 577 0217)
+WhatsApp: wa.me/971581095540
+Address: Cayan Business Center, Al Thanyah First, Barsha Heights, Tecom, Dubai, UAE
+Google Maps: https://www.google.com/maps/place/Toma+lounge/@25.0951615,55.1732905,760m
+Hours: Open daily, 8:00 AM – 3:00 AM
+Price range: AED 50-100 per person
+Google rating: 4.4★ (231 reviews) — real number, use as-is
+Online ordering: available on Talabat and Noon Food (link placeholders, label them clearly)
+Logo: circular badge logo, turquoise/cyan "T" monogram on black background, gold ornamental flourish details, serif wordmark "TOMA LOUNGE" in turquoise, gold script tagline underneath
+Brand colors (pulled directly from logo/Instagram): 
+  - Turquoise/teal: #2EC4D6 (primary accent)
+  - Gold/brass: #C9A24B (secondary accent, ornamental details)
+  - Charcoal black: #0D0D0D (background, matches their Instagram dark theme)
+  - Off-white/cream: #F5F0E6 (text on dark backgrounds)
+Services: dine-in, takeaway, delivery (Talabat/Noon), shisha lounge, private events/buffet catering (proven via Ramadan iftar buffet service for large groups)
+
+=== PAGES / SECTIONS (multi-page site) ===
+1. Home — hero with tagline, open-until-3AM badge, 4.4★/231 reviews badge, featured dishes, shisha lounge callout, primary CTAs (Order Now / Reserve Table / WhatsApp)
+2. Menu — categorized: Mezze & Starters (Hummus Bairouti, Falafel, Tomato Soup, Mushroom Soup), Charcoal Grill (Charcoal Grill Chicken, Grilled Chicken Steak, Stuffed Chicken, Mixed Grill Platter, Full Grilled Chicken), Wraps & Sandwiches (Chicken Shawarma), Specialties (Beef Stroganoff), Drinks (Mint Margherita, Americano with Water), Desserts (Tort), Shisha Menu (mention AED 40 starting price, noted as a guest favorite). Mark any unconfirmed prices as "MARKET PRICE" placeholders, not fake numbers.
+3. About Us — authentic Syrian/Arabic oriental cuisine story, fresh ingredients, complimentary sides culture (hummus, olives, pickles served with mains), late-night lounge atmosphere
+4. Gallery — grid for storefront, dishes, shisha lounge ambiance, event/buffet setups
+5. Reviews — 3-4 paraphrased real review themes (tender grilled meats, generous complimentary sides, well-organized Ramadan iftar buffet for full-house bookings, shisha quality) — written as plausible Dubai-resident testimonials with first names, star ratings, relative dates
+6. Contact / Reservations — embedded Google Maps iframe pinned to Cayan Business Center, simple reservation form (name, phone, date, party size, occasion), floating WhatsApp button, direct links to Talabat, Noon Food, Instagram
+
+=== TECHNICAL REQUIREMENTS ===
+- Multi-page site, React or static HTML/CSS/JS (no framework-locked proprietary APIs)
+- Mobile-first, fully responsive
+- Sticky header with "Order Now" + phone CTA
+- Floating WhatsApp button (wa.me/971581095540) visible on every page
+- Smooth scroll, fade-in-on-scroll animations
+- SEO meta tags: realistic title/description per page targeting "Syrian restaurant Tecom Dubai", "shisha lounge Barsha Heights", "Arabic restaurant Dubai late night"
+- Schema.org Restaurant structured data: name, address, phone, hours, price range, cuisine type, aggregateRating (4.4, 231 reviews)
+- PORTABILITY: no Vercel-only APIs, no hardcoded Replit account paths/imports, no environment-specific assumptions that break on GitHub re-import or redeploy elsewhere. Use standard Node.js/Express + static files so the project runs identically on Replit, Vercel, Railway, Render, or any VPS.
+
+=== IMAGERY GUIDELINES ===
+- Photorealistic style, warm tones, real-photography feel — NOT generic AI-clipart look
+- Suggested Unsplash/stock search terms: "Middle Eastern grilled chicken platter", "Arabic mezze spread", "shisha lounge night ambiance", "Syrian shawarma wrap", "Dubai restaurant interior dark elegant", "charcoal grill skewers"
+- No stock-photo-obvious team photos; describe a believable kitchen/host team if needed
+
+=== BACKEND (Node.js / Express) ===
+- POST endpoint for reservation form submissions (name, phone, date, party size, notes)
+- Simple persistence: JSON file or SQLite (no paid DB dependency for MVP)
+- Input validation, CORS enabled
+- README with setup + deploy instructions (Replit AND portability notes for Vercel/Railway/Render)
+
+=== CONVERSION OPTIMIZATION ===
+- CTA in every section (Order Now / Reserve / WhatsApp)
+- Social proof in hero: "4.4★ — 231 Google Reviews"
+- Testimonials with realistic, specific, dated reviews matching real review themes above
+- Click-to-call phone links on mobile
+- WhatsApp always visible
+- Highlight "Open until 3 AM" as a late-night differentiator without fabricating other claims
+
+Build the complete frontend AND the Node.js backend. Make this look like a real Tecom/Barsha Heights Dubai restaurant that converts visitors into diners and shisha-lounge guests.

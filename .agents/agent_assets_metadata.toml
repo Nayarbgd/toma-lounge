@@ -1,0 +1,38 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "PnrVkPJ_Ti7M4PL4BpGjy"
+uri = "file://artifacts/toma-lounge/public/images/grill.png"
+type = "image"
+title = "Mixed grill platter"
+
+[[generated]]
+id = "B9Y6OUxIkUo563_FGvk-W"
+uri = "file://artifacts/toma-lounge/public/images/mezze.png"
+type = "image"
+title = "Arabic mezze spread"
+
+[[generated]]
+id = "s9IEqXi_7vZgba3DuxZ_a"
+uri = "file://artifacts/toma-lounge/public/images/shisha.png"
+type = "image"
+title = "Shisha lounge interior"
+
+[[generated]]
+id = "pUwUW64nqp2CoD7CcD2sA"
+uri = "file://artifacts/toma-lounge/public/images/shawarma.png"
+type = "image"
+title = "Chicken shawarma wrap"
+
+[[generated]]
+id = "_wTahetAnSnR2f73sc73r"
+uri = "file://artifacts/toma-lounge/public/images/interior.png"
+type = "image"
+title = "Restaurant interior"
+
+[[generated]]
+id = "cXL0OZNEXPl53vap0dAwt"
+uri = "file://artifacts/toma-lounge/public/images/buffet.png"
+type = "image"
+title = "Ramadan iftar buffet"
