@@ -224,6 +224,53 @@ router.patch("/reservations/:id", requireAdmin, async (req, res) => {
   }
 });
 
+// ── POST /api/reservations/:id/resend-confirmation ────────────────────────────
+// Manually resend the confirmation email to the guest (admin only).
+
+router.post("/reservations/:id/resend-confirmation", requireAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  const { data: current, error: fetchError } = await supabaseAdmin
+    .from("reservations")
+    .select("id, status, email, name, phone, date, time, party_size, notes")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) {
+    if (fetchError.code === "PGRST116") {
+      res.status(404).json({ error: "Reservation not found" });
+      return;
+    }
+    req.log.error({ err: fetchError }, "Failed to fetch reservation for resend");
+    res.status(500).json({ error: "Failed to fetch reservation" });
+    return;
+  }
+
+  const guestEmail = current.email as string | null | undefined;
+
+  if (!guestEmail) {
+    res.status(422).json({ error: "No email address on file for this reservation" });
+    return;
+  }
+
+  try {
+    await sendReservationConfirmedEmail({
+      name: current.name as string,
+      phone: current.phone as string,
+      date: current.date as string,
+      time: current.time as string,
+      partySize: current.party_size as number,
+      notes: (current.notes as string | null) ?? null,
+      guestEmail,
+    });
+    req.log.info({ id, to: guestEmail }, "Confirmation email resent to guest");
+    res.json({ ok: true });
+  } catch (err) {
+    req.log.error({ err }, "Failed to resend confirmation email");
+    res.status(500).json({ error: "Failed to send email" });
+  }
+});
+
 // ── Helper ────────────────────────────────────────────────────────────────────
 
 function toReservationResponse(row: Record<string, unknown>) {

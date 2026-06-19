@@ -20,7 +20,7 @@ import {
 } from "date-fns";
 import {
   Trash2, Search, Download, CheckCircle2, XCircle,
-  ChevronUp, ChevronDown, Users, ChevronsUpDown,
+  ChevronUp, ChevronDown, Users, ChevronsUpDown, Mail,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -74,6 +74,27 @@ export function ReservationsTab({ allReservations, authHeaders, isLoading }: Pro
       onError: (e: Error) => toast({ title: "Update failed", description: e.message, variant: "destructive" }),
     });
   }, [updateMutation, queryClient, queryKey, toast]);
+
+  const [resendingId, setResendingId] = useState<string | null>(null);
+  const handleResendEmail = useCallback(async (id: string) => {
+    setResendingId(id);
+    try {
+      const res = await fetch(`/api/reservations/${id}/resend-confirmation`, {
+        method: "POST",
+        headers: authHeaders,
+      });
+      const body = await res.json().catch(() => ({}));
+      if (res.ok) {
+        toast({ title: "Confirmation email sent", description: "The guest has been notified." });
+      } else {
+        toast({ title: "Could not send email", description: body.error ?? "Unknown error", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Network error", description: "Check your connection and try again.", variant: "destructive" });
+    } finally {
+      setResendingId(null);
+    }
+  }, [authHeaders, toast]);
 
   const filteredReservations = useMemo(() => {
     let list = [...allReservations];
@@ -299,6 +320,11 @@ export function ReservationsTab({ allReservations, authHeaders, isLoading }: Pro
                             <CheckCircle2 className="w-4 h-4" />
                           </Button>
                         )}
+                        {res.status === "confirmed" && (
+                          <Button variant="ghost" size="icon" className="h-7 w-7 text-blue-400 hover:bg-blue-500/10" title="Resend confirmation email" disabled={resendingId === res.id} onClick={() => handleResendEmail(res.id)}>
+                            <Mail className="w-3.5 h-3.5" />
+                          </Button>
+                        )}
                         {(res.status === "pending" || res.status === "confirmed") && (
                           <Button variant="ghost" size="icon" className="h-7 w-7 text-red-400 hover:bg-red-500/10" title="Cancel" onClick={() => handleStatusChange(res.id, "cancelled")}>
                             <XCircle className="w-4 h-4" />
@@ -346,6 +372,11 @@ export function ReservationsTab({ allReservations, authHeaders, isLoading }: Pro
                     {res.status === "pending" && (
                       <Button size="sm" className="h-8 flex-1 gap-1 bg-green-500/10 text-green-500 hover:bg-green-500/20 border border-green-500/20" variant="ghost" onClick={() => handleStatusChange(res.id, "confirmed")}>
                         <CheckCircle2 className="w-3.5 h-3.5" />Confirm
+                      </Button>
+                    )}
+                    {res.status === "confirmed" && (
+                      <Button size="sm" className="h-8 gap-1 text-blue-400 hover:bg-blue-500/10 border border-blue-500/20" variant="ghost" disabled={resendingId === res.id} onClick={() => handleResendEmail(res.id)}>
+                        <Mail className="w-3.5 h-3.5" />{resendingId === res.id ? "Sending…" : "Resend Email"}
                       </Button>
                     )}
                     {(res.status === "pending" || res.status === "confirmed") && (
