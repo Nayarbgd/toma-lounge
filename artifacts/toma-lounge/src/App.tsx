@@ -11,10 +11,12 @@ import { Contact } from "@/pages/contact";
 import { About } from "@/pages/about";
 import { Gallery } from "@/pages/gallery";
 import { Reviews } from "@/pages/reviews";
+import { AdminLogin } from "@/pages/admin-login";
+import { AdminDashboard } from "@/pages/admin-dashboard";
 
 const queryClient = new QueryClient();
 
-function Router() {
+function PublicLayout() {
   return (
     <Layout>
       <Switch>
@@ -27,6 +29,17 @@ function Router() {
         <Route component={NotFound} />
       </Switch>
     </Layout>
+  );
+}
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/admin" component={AdminLogin} />
+      <Route path="/admin/login" component={AdminLogin} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route component={PublicLayout} />
+    </Switch>
   );
 }
 

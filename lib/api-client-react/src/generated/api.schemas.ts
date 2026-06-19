@@ -20,7 +20,7 @@ export interface ReservationInput {
      * @maxLength 30
      */
   phone: string;
-  /** Reservation date (ISO 8601) */
+  /** Reservation datetime (ISO 8601 or datetime-local string) */
   date: string;
   /**
      * @minimum 1
@@ -39,8 +39,27 @@ export interface ReservationInput {
   notes?: string | null;
 }
 
+export type UpdateReservationBodyStatus = typeof UpdateReservationBodyStatus[keyof typeof UpdateReservationBodyStatus];
+
+
+export const UpdateReservationBodyStatus = {
+  pending: 'pending',
+  confirmed: 'confirmed',
+  cancelled: 'cancelled',
+  completed: 'completed',
+} as const;
+
+export interface UpdateReservationBody {
+  status: UpdateReservationBodyStatus;
+  /**
+     * @maxLength 500
+     * @nullable
+     */
+  notes?: string | null;
+}
+
 export interface Reservation {
-  id: number;
+  id: string;
   name: string;
   phone: string;
   date: string;
@@ -49,7 +68,17 @@ export interface Reservation {
   occasion?: string | null;
   /** @nullable */
   notes?: string | null;
+  status: string;
   createdAt: string;
+}
+
+export interface AdminLoginBody {
+  email: string;
+  password: string;
+}
+
+export interface AdminLoginResponse {
+  accessToken: string;
 }
 
 export interface ErrorResponse {

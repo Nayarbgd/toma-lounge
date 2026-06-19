@@ -1,0 +1,49 @@
+This Replit project for "Toma Lounge" already has a working reservation feature (POST /api/reservations, GET /api/reservations) backed by an internal PostgreSQL database. Migrate this reservation system to use Supabase as the database instead, replacing the internal PostgreSQL connection. Do not rebuild or restyle the website — only replace the data layer for reservations.
+
+=== MIGRATION GOAL ===
+Replace the current internal PostgreSQL-backed reservations storage with Supabase, using the existing Supabase project already created for this business. Preserve the existing reservation form on the frontend, the existing API routes and their behavior, and the existing design — only the underlying database changes.
+
+=== DATA TO MANAGE ===
+Table: reservations
+- id (UUID, primary key, auto-generated)
+- name (text, required)
+- phone (text, required)
+- date (date, required)
+- time (time, required)
+- party_size (integer, required)
+- notes (text, optional — special requests/occasion)
+- status (text, default 'pending' — allowed values: pending, confirmed, cancelled, completed)
+- created_at (timestamptz, default now())
+
+=== SUPABASE SETUP ===
+- Use the @supabase/supabase-js client SDK
+- Read SUPABASE_URL, SUPABASE_ANON_KEY, and SUPABASE_SERVICE_ROLE_KEY from environment variables — these are already set in this Replit project's Secrets, do not ask for them again or hardcode any credentials
+- Use the anon key only for the public-facing insert (the reservation form submission)
+- Use the service role key only in backend/admin routes that need to read, update, or delete reservations — never expose the service role key to frontend code
+- Generate the SQL schema (CREATE TABLE reservations ...) as a separate .sql file the user can run in the Supabase SQL Editor — do not assume it auto-applies
+- Enable Row Level Security (RLS) on the reservations table:
+  - Public/anon role: INSERT only (so the website form can create new reservations), no SELECT/UPDATE/DELETE
+  - Service role (used only in backend admin routes): full SELECT/UPDATE/DELETE access
+- Include the .sql schema file with RLS policy statements, each with a short comment explaining what it does
+
+=== MIGRATE THE EXISTING API ===
+- Update POST /api/reservations to insert into Supabase instead of the internal PostgreSQL database, keeping the same request/response shape the frontend already expects
+- Update GET /api/reservations to read from Supabase using the service role key (server-side only), keeping the same response shape
+- Add PATCH /api/reservations/:id to update status (pending/confirmed/cancelled/completed) — needed for the admin dashboard
+- Keep all existing input validation (Zod) and CORS configuration as-is
+- Remove the now-unused internal PostgreSQL connection/dependency for reservations once the migration is confirmed working — but don't remove it if other unrelated features still depend on it
+
+=== ADMIN DASHBOARD (new addition) ===
+- Simple login (Supabase Auth, single admin email/password is enough for MVP)
+- List view of all reservations, sortable by date, with status badges (pending/confirmed/cancelled/completed)
+- Ability to update status and add internal notes
+- Basic filter by date range and status
+- Mobile-responsive, matching the existing Toma Lounge brand colors (turquoise #2EC4D6, gold #C9A24B, charcoal black #0D0D0D)
+
+=== TECHNICAL / PORTABILITY REQUIREMENTS ===
+- Keep using the existing Node.js/Express backend structure — don't introduce a new framework
+- All Supabase credentials via environment variables only, already present in Secrets — add a .env.example file listing the required keys (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY) without real values, for documentation purposes
+- Must run identically after a GitHub re-import into a different Replit/Vercel/Railway account, since the reservation data now lives in Supabase, not in Replit's internal database
+- Add a short README section: "Database Migration" explaining what changed (Supabase instead of internal PostgreSQL) and "Setup" explaining where to get Supabase keys for anyone re-deploying this project
+
+After migrating, confirm the existing reservation form on the Contact page still works end-to-end (submission → saved in Supabase → visible in the new admin dashboard), and do not touch unrelated sections of the site (Home, Menu, About, Gallery, Reviews).

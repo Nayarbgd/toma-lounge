@@ -20,10 +20,13 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AdminLoginBody,
+  AdminLoginResponse,
   ErrorResponse,
   HealthStatus,
   Reservation,
-  ReservationInput
+  ReservationInput,
+  UpdateReservationBody
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -47,7 +50,6 @@ export const getHealthCheckUrl = () => {
 }
 
 /**
- * Returns server health status
  * @summary Health check
  */
 export const healthCheck = async ( options?: RequestInit): Promise<HealthStatus> => {
@@ -125,7 +127,6 @@ export const getCreateReservationUrl = () => {
 }
 
 /**
- * Submit a table reservation request
  * @summary Create a reservation
  */
 export const createReservation = async (reservationInput: ReservationInput, options?: RequestInit): Promise<Reservation> => {
@@ -197,8 +198,7 @@ export const getListReservationsUrl = () => {
 }
 
 /**
- * Get all reservations (admin)
- * @summary List all reservations
+ * @summary List all reservations (admin)
  */
 export const listReservations = async ( options?: RequestInit): Promise<Reservation[]> => {
 
@@ -222,7 +222,7 @@ export const getListReservationsQueryKey = () => {
     }
 
 
-export const getListReservationsQueryOptions = <TData = Awaited<ReturnType<typeof listReservations>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listReservations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getListReservationsQueryOptions = <TData = Awaited<ReturnType<typeof listReservations>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listReservations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -241,14 +241,14 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type ListReservationsQueryResult = NonNullable<Awaited<ReturnType<typeof listReservations>>>
-export type ListReservationsQueryError = ErrorType<unknown>
+export type ListReservationsQueryError = ErrorType<ErrorResponse>
 
 
 /**
- * @summary List all reservations
+ * @summary List all reservations (admin)
  */
 
-export function useListReservations<TData = Awaited<ReturnType<typeof listReservations>>, TError = ErrorType<unknown>>(
+export function useListReservations<TData = Awaited<ReturnType<typeof listReservations>>, TError = ErrorType<ErrorResponse>>(
   options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listReservations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
@@ -265,4 +265,147 @@ export function useListReservations<TData = Awaited<ReturnType<typeof listReserv
 
 
 
+
+export const getUpdateReservationUrl = (id: string,) => {
+
+
+
+
+  return `/api/reservations/${id}`
+}
+
+/**
+ * @summary Update reservation status (admin)
+ */
+export const updateReservation = async (id: string,
+    updateReservationBody: UpdateReservationBody, options?: RequestInit): Promise<Reservation> => {
+
+  return customFetch<Reservation>(getUpdateReservationUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      updateReservationBody,)
+  }
+);}
+
+
+
+
+export const getUpdateReservationMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateReservation>>, TError,{id: string;data: BodyType<UpdateReservationBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateReservation>>, TError,{id: string;data: BodyType<UpdateReservationBody>}, TContext> => {
+
+const mutationKey = ['updateReservation'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateReservation>>, {id: string;data: BodyType<UpdateReservationBody>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateReservation(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateReservationMutationResult = NonNullable<Awaited<ReturnType<typeof updateReservation>>>
+    export type UpdateReservationMutationBody = BodyType<UpdateReservationBody>
+    export type UpdateReservationMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Update reservation status (admin)
+ */
+export const useUpdateReservation = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateReservation>>, TError,{id: string;data: BodyType<UpdateReservationBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateReservation>>,
+        TError,
+        {id: string;data: BodyType<UpdateReservationBody>},
+        TContext
+      > => {
+      return useMutation(getUpdateReservationMutationOptions(options));
+    }
+
+export const getAdminLoginUrl = () => {
+
+
+
+
+  return `/api/admin/login`
+}
+
+/**
+ * @summary Admin login via Supabase Auth
+ */
+export const adminLogin = async (adminLoginBody: AdminLoginBody, options?: RequestInit): Promise<AdminLoginResponse> => {
+
+  return customFetch<AdminLoginResponse>(getAdminLoginUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      adminLoginBody,)
+  }
+);}
+
+
+
+
+export const getAdminLoginMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminLogin>>, TError,{data: BodyType<AdminLoginBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminLogin>>, TError,{data: BodyType<AdminLoginBody>}, TContext> => {
+
+const mutationKey = ['adminLogin'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminLogin>>, {data: BodyType<AdminLoginBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  adminLogin(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminLoginMutationResult = NonNullable<Awaited<ReturnType<typeof adminLogin>>>
+    export type AdminLoginMutationBody = BodyType<AdminLoginBody>
+    export type AdminLoginMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Admin login via Supabase Auth
+ */
+export const useAdminLogin = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminLogin>>, TError,{data: BodyType<AdminLoginBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminLogin>>,
+        TError,
+        {data: BodyType<AdminLoginBody>},
+        TContext
+      > => {
+      return useMutation(getAdminLoginMutationOptions(options));
+    }
 

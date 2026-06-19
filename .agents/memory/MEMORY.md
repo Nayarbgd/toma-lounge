@@ -1,0 +1,1 @@
+- [Orval index.ts conflict](orval-index-conflict.md) — Orval regenerates the api-zod barrel on every codegen run; the codegen script must patch it after orval runs.

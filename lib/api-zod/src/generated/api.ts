@@ -9,7 +9,6 @@ import * as zod from 'zod';
 
 
 /**
- * Returns server health status
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({
@@ -18,7 +17,6 @@ export const HealthCheckResponse = zod.object({
 
 
 /**
- * Submit a table reservation request
  * @summary Create a reservation
  */
 export const createReservationBodyNameMax = 100;
@@ -37,7 +35,7 @@ export const createReservationBodyNotesMax = 500;
 export const CreateReservationBody = zod.object({
   "name": zod.string().min(1).max(createReservationBodyNameMax),
   "phone": zod.string().min(createReservationBodyPhoneMin).max(createReservationBodyPhoneMax),
-  "date": zod.string().describe('Reservation date (ISO 8601)'),
+  "date": zod.string().describe('Reservation datetime (ISO 8601 or datetime-local string)'),
   "partySize": zod.number().min(1).max(createReservationBodyPartySizeMax),
   "occasion": zod.string().max(createReservationBodyOccasionMax).nullish(),
   "notes": zod.string().max(createReservationBodyNotesMax).nullish()
@@ -45,19 +43,61 @@ export const CreateReservationBody = zod.object({
 
 
 /**
- * Get all reservations (admin)
- * @summary List all reservations
+ * @summary List all reservations (admin)
  */
 export const ListReservationsResponseItem = zod.object({
-  "id": zod.number(),
+  "id": zod.string(),
   "name": zod.string(),
   "phone": zod.string(),
   "date": zod.string(),
   "partySize": zod.number(),
   "occasion": zod.string().nullish(),
   "notes": zod.string().nullish(),
+  "status": zod.string(),
   "createdAt": zod.string()
 })
 export const ListReservationsResponse = zod.array(ListReservationsResponseItem)
+
+
+/**
+ * @summary Update reservation status (admin)
+ */
+export const UpdateReservationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const updateReservationBodyNotesMax = 500;
+
+
+
+export const UpdateReservationBody = zod.object({
+  "status": zod.enum(['pending', 'confirmed', 'cancelled', 'completed']),
+  "notes": zod.string().max(updateReservationBodyNotesMax).nullish()
+})
+
+export const UpdateReservationResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "phone": zod.string(),
+  "date": zod.string(),
+  "partySize": zod.number(),
+  "occasion": zod.string().nullish(),
+  "notes": zod.string().nullish(),
+  "status": zod.string(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Admin login via Supabase Auth
+ */
+export const AdminLoginBody = zod.object({
+  "email": zod.string(),
+  "password": zod.string()
+})
+
+export const AdminLoginResponse = zod.object({
+  "accessToken": zod.string()
+})
 
 
