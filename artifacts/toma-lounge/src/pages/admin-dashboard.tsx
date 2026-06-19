@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "wouter";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAdminAuth } from "@/hooks/use-admin-auth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,19 +17,28 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useListReservations, useUpdateReservation, useDeleteReservation } from "@workspace/api-client-react";
+import {
+  useListReservations,
+  useUpdateReservation,
+  useDeleteReservation,
+  getListReservationsQueryKey,
+  type Reservation,
+} from "@workspace/api-client-react";
 import { format } from "date-fns";
-import { LogOut, Filter, Trash2 } from "lucide-react";
+import { LogOut, Filter, Trash2, Wifi } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useReservationsRealtime } from "@/hooks/use-reservations-realtime";
 
 export function AdminDashboard() {
   const { isAuthenticated, clearToken, getToken } = useAdminAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const token = getToken();
 
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [realtimeConnected, setRealtimeConnected] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -37,8 +47,9 @@ export function AdminDashboard() {
   }, [isAuthenticated, setLocation]);
 
   const authHeaders = { Authorization: `Bearer ${token}` };
+  const queryKey = getListReservationsQueryKey();
 
-  const { data: allReservations, isLoading, refetch } = useListReservations({
+  const { data: allReservations, isLoading } = useListReservations({
     request: { headers: authHeaders },
   });
 
@@ -56,7 +67,6 @@ export function AdminDashboard() {
       {
         onSuccess: () => {
           toast({ title: "Status updated", description: "Reservation status has been updated." });
-          refetch();
         },
         onError: (error) => {
           toast({ title: "Update failed", description: error.message || "Could not update status.", variant: "destructive" });
@@ -73,7 +83,6 @@ export function AdminDashboard() {
         onSuccess: () => {
           toast({ title: "Reservation deleted", description: "The reservation has been permanently removed." });
           setDeleteTargetId(null);
-          refetch();
         },
         onError: (error) => {
           toast({ title: "Delete failed", description: error.message || "Could not delete reservation.", variant: "destructive" });
@@ -82,6 +91,51 @@ export function AdminDashboard() {
       }
     );
   };
+
+  const handleInsert = useCallback(
+    (record: Record<string, unknown>) => {
+      const incoming = record as unknown as Reservation;
+      queryClient.setQueryData<Reservation[]>(queryKey, (prev) => {
+        if (!prev) return [incoming];
+        if (prev.some((r) => r.id === incoming.id)) return prev;
+        return [incoming, ...prev];
+      });
+      toast({
+        title: "New reservation",
+        description: `${incoming.name} — ${incoming.partySize} guests on ${format(new Date(incoming.date), "MMM d, h:mm a")}`,
+      });
+      setRealtimeConnected(true);
+    },
+    [queryClient, queryKey, toast]
+  );
+
+  const handleUpdate = useCallback(
+    (record: Record<string, unknown>) => {
+      const updated = record as unknown as Reservation;
+      queryClient.setQueryData<Reservation[]>(queryKey, (prev) =>
+        prev ? prev.map((r) => (r.id === updated.id ? { ...r, ...updated } : r)) : prev
+      );
+      setRealtimeConnected(true);
+    },
+    [queryClient, queryKey]
+  );
+
+  const handleDelete = useCallback(
+    (id: string) => {
+      queryClient.setQueryData<Reservation[]>(queryKey, (prev) =>
+        prev ? prev.filter((r) => r.id !== id) : prev
+      );
+      setRealtimeConnected(true);
+    },
+    [queryClient, queryKey]
+  );
+
+  useReservationsRealtime({
+    token,
+    onInsert: handleInsert,
+    onUpdate: handleUpdate,
+    onDelete: handleDelete,
+  });
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -103,8 +157,16 @@ export function AdminDashboard() {
     <div className="min-h-screen bg-background flex flex-col">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="font-bold text-xl tracking-wider text-primary">
-            TOMA LOUNGE <span className="text-sm font-normal text-muted-foreground ml-2">Admin</span>
+          <div className="flex items-center gap-3">
+            <div className="font-bold text-xl tracking-wider text-primary">
+              TOMA LOUNGE <span className="text-sm font-normal text-muted-foreground ml-2">Admin</span>
+            </div>
+            {realtimeConnected && (
+              <div className="flex items-center gap-1.5 text-xs text-green-500">
+                <Wifi className="w-3 h-3" />
+                <span className="hidden sm:inline">Live</span>
+              </div>
+            )}
           </div>
           <Button variant="ghost" size="sm" onClick={clearToken} className="text-muted-foreground hover:text-foreground">
             <LogOut className="w-4 h-4 mr-2" />
