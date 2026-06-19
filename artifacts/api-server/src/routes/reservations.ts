@@ -17,7 +17,7 @@ router.post("/reservations", async (req, res) => {
   const reservationDate = dateObj.toISOString().split("T")[0];
   const reservationTime = dateObj.toTimeString().slice(0, 8);
 
-  const { data, error } = await supabaseAnon
+  const { data, error } = await supabaseAdmin
     .from("reservations")
     .insert({
       name,
