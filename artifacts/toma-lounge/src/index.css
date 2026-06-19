@@ -338,3 +338,24 @@
     inset: -1px;
   }
 }
+
+/* ── Mobile / Global resets ── */
+html, body {
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Ensure images never cause overflow */
+img {
+  max-width: 100%;
+}
+
+/* Comfortable touch targets */
+button, a {
+  min-height: 44px;
+  min-width: 44px;
+}

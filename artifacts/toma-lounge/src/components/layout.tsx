@@ -1,68 +1,127 @@
-import { Link } from "wouter";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "wouter";
 import { FaWhatsapp } from "react-icons/fa";
 import { Button } from "./ui/button";
+import { Menu, X } from "lucide-react";
+
+const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/menu", label: "Menu" },
+  { href: "/about", label: "About" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/reviews", label: "Reviews" },
+  { href: "/contact", label: "Contact" },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [location] = useLocation();
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur-[12px]" style={{ background: "rgba(0,0,0,0.80)" }}>
+      <header
+        className="sticky top-0 z-50 w-full border-b border-border/40 backdrop-blur-[12px]"
+        style={{ background: "rgba(0,0,0,0.80)" }}
+      >
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="group flex items-center gap-3 select-none">
+          <Link href="/" className="group flex items-center gap-3 select-none min-w-0">
             <img
               src="/images/logo.png"
               alt="Toma Lounge Logo"
               fetchPriority="high"
-              className="w-auto object-contain transition-all duration-[250ms] ease-in-out group-hover:scale-[1.03]"
-              style={{
-                height: "44px",
-                filter: "drop-shadow(0 0 0px rgba(32,200,245,0))",
-              }}
+              className="w-auto object-contain shrink-0 transition-all duration-[250ms] ease-in-out group-hover:scale-[1.03]"
+              style={{ height: "40px" }}
               onMouseEnter={e => (e.currentTarget.style.filter = "drop-shadow(0 0 8px rgba(32,200,245,0.18))")}
-              onMouseLeave={e => (e.currentTarget.style.filter = "drop-shadow(0 0 0px rgba(32,200,245,0))")}
+              onMouseLeave={e => (e.currentTarget.style.filter = "")}
             />
-            <div className="flex flex-col justify-center leading-none">
+            <div className="flex flex-col justify-center leading-none min-w-0">
               <span
-                className="font-bold tracking-[0.04em]"
-                style={{ fontFamily: "'Cinzel', serif", color: "#20C8F5", fontSize: "clamp(14px, 1.4vw, 18px)", fontWeight: 700 }}
+                className="font-bold tracking-[0.04em] truncate"
+                style={{ fontFamily: "'Cinzel', serif", color: "#20C8F5", fontSize: "clamp(13px, 1.3vw, 17px)", fontWeight: 700 }}
               >
                 TOMA LOUNGE
               </span>
               <span
                 className="hidden sm:block mt-0.5"
-                style={{ fontFamily: "'Inter', sans-serif", color: "#B89663", fontSize: "11px", fontWeight: 400, letterSpacing: "0.02em" }}
+                style={{ fontFamily: "'Inter', sans-serif", color: "#B89663", fontSize: "11px", fontWeight: 400 }}
               >
                 Where Taste Meets Comfort
               </span>
             </div>
           </Link>
-          
+
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-            <Link href="/menu" className="hover:text-primary transition-colors">Menu</Link>
-            <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-            <Link href="/gallery" className="hover:text-primary transition-colors">Gallery</Link>
-            <Link href="/reviews" className="hover:text-primary transition-colors">Reviews</Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
+            {NAV_LINKS.map(l => (
+              <Link key={l.href} href={l.href} className="hover:text-primary transition-colors">{l.label}</Link>
+            ))}
           </nav>
-          
-          <div className="flex items-center gap-4">
-            <a href="tel:+971581095540" className="text-sm font-medium hidden sm:block text-muted-foreground hover:text-foreground">
+
+          <div className="hidden md:flex items-center gap-4">
+            <a href="tel:+971581095540" className="text-sm font-medium text-muted-foreground hover:text-foreground">
               058 109 5540
             </a>
             <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
               <Link href="/contact">Order Now</Link>
             </Button>
           </div>
+
+          <button
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-foreground hover:text-primary transition-colors"
+            onClick={() => setMenuOpen(o => !o)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
       </header>
+
+      {menuOpen && (
+        <div
+          className="fixed inset-0 z-40 flex flex-col md:hidden"
+          style={{ background: "rgba(0,0,0,0.97)", paddingTop: "64px" }}
+        >
+          <nav className="flex flex-col items-center justify-center flex-1 gap-1 py-8">
+            {NAV_LINKS.map((l, i) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setMenuOpen(false)}
+                className="w-full text-center py-4 text-2xl font-medium text-foreground hover:text-primary active:text-primary transition-colors"
+                style={{ animationDelay: `${i * 50}ms` }}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="px-6 pb-10 flex flex-col items-center gap-3">
+            <a href="tel:+971581095540" className="text-sm text-muted-foreground mb-1">058 109 5540</a>
+            <Button
+              asChild
+              size="lg"
+              className="w-full max-w-xs bg-primary text-black font-semibold"
+            >
+              <Link href="/contact" onClick={() => setMenuOpen(false)}>Reserve a Table</Link>
+            </Button>
+          </div>
+        </div>
+      )}
 
       <main className="flex-1">
         {children}
       </main>
 
       <footer className="border-t border-border/40 bg-card mt-12 py-12">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
+        <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="col-span-2 md:col-span-1">
             <h3 className="font-bold text-lg mb-4 text-primary">TOMA LOUNGE</h3>
             <p className="text-sm text-muted-foreground">Where Taste Meets Comfort</p>
             <p className="text-sm text-muted-foreground mt-2">Syrian & Middle Eastern Cuisine<br/>Premium Shisha Lounge</p>

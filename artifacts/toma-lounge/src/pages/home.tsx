@@ -113,7 +113,7 @@ export function Home() {
       </section>
 
       {/* Featured Section */}
-      <section className="py-24 bg-card">
+      <section className="py-16 md:py-24 bg-card">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-4">Our Signatures</h2>
@@ -148,7 +148,7 @@ export function Home() {
       </section>
 
       {/* Shisha Callout */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="py-16 md:py-24 relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src="/images/shisha.png" alt="Shisha Lounge" className="w-full h-full object-cover opacity-30" />
           <div className="absolute inset-0 bg-black/60"></div>
@@ -168,7 +168,7 @@ export function Home() {
       </section>
 
       {/* Why Toma Lounge */}
-      <section className="py-24 bg-card">
+      <section className="py-16 md:py-24 bg-card">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-4">Why Toma Lounge</h2>
@@ -201,7 +201,7 @@ export function Home() {
       </section>
 
       {/* Reviews teaser */}
-      <section className="py-24">
+      <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-secondary mb-4">What Our Guests Say</h2>
@@ -254,7 +254,7 @@ export function Home() {
       </section>
 
       {/* Find Us / Final CTA */}
-      <section className="py-24 bg-card border-t border-border">
+      <section className="py-16 md:py-24 bg-card border-t border-border">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="md:w-1/2 space-y-6">

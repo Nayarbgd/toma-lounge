@@ -20,7 +20,7 @@ export function Gallery() {
         <p className="text-muted-foreground max-w-2xl mx-auto">A glimpse into the ambiance, craft, and culinary passion at Toma Lounge.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[300px]">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 md:auto-rows-[300px]">
         {images.map((img, idx) => (
           <motion.div
             key={idx}
@@ -28,7 +28,7 @@ export function Gallery() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1, duration: 0.5 }}
-            className={`relative overflow-hidden rounded-xl group ${img.span}`}
+            className={`relative overflow-hidden rounded-xl group aspect-square md:aspect-auto ${img.span}`}
           >
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
             <img 

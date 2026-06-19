@@ -24,8 +24,8 @@ export function About() {
       </section>
 
       {/* Content */}
-      <section className="py-24">
-        <div className="container mx-auto px-4 max-w-4xl space-y-24">
+      <section className="py-12 md:py-24">
+        <div className="container mx-auto px-4 max-w-4xl space-y-12 md:space-y-24">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

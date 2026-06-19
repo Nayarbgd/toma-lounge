@@ -59,10 +59,10 @@ export function Menu() {
             <div className="space-y-6">
               {category.items.map((item, itemIdx) => (
                 <div key={itemIdx} className="flex flex-col">
-                  <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-foreground text-lg">{item.name}</h3>
-                    <div className="border-b border-dotted border-border/40 flex-grow mx-4 relative top-[-6px]"></div>
-                    <span className="font-bold text-secondary whitespace-nowrap">{item.price}</span>
+                  <div className="flex justify-between items-baseline mb-1 gap-2">
+                    <h3 className="font-bold text-foreground text-base md:text-lg min-w-0">{item.name}</h3>
+                    <div className="border-b border-dotted border-border/40 flex-grow mx-2 shrink relative top-[-4px] hidden sm:block"></div>
+                    <span className="font-bold text-secondary whitespace-nowrap shrink-0">{item.price}</span>
                   </div>
                   <p className="text-sm text-muted-foreground">{item.desc}</p>
                 </div>
