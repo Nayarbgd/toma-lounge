@@ -1,0 +1,160 @@
+The current reservation form uses a traditional form layout with a datetime-local input. Replace it with a modern reservation flow similar to OpenTable, SevenRooms and Eat App.
+
+GOAL:
+Reduce friction and make the booking process feel premium and intuitive.
+
+Do NOT change the existing reservation API endpoint or backend logic. This is a frontend UX redesign first.
+
+==================================================
+NEW RESERVATION FLOW
+====================
+
+Create a multi-step reservation experience.
+
+STEP 1
+Select Date
+
+* Show the next available dates as large selectable cards/chips.
+* Example:
+
+Fri 20 Jun
+Sat 21 Jun
+Sun 22 Jun
+Mon 23 Jun
+
+* Disable blocked dates.
+* If the restaurant is closed on a selected day, show:
+  "Restaurant Closed"
+
+==================================================
+
+STEP 2
+Select Time
+
+After selecting a date:
+
+* Display available times as large buttons/chips:
+
+6:00 PM
+6:30 PM
+7:00 PM
+7:30 PM
+8:00 PM
+
+Requirements:
+
+* Generate times dynamically from Business Hours.
+* Hide unavailable times.
+* Disable blocked time slots.
+* Disable fully booked slots.
+* Show visual states:
+
+Available
+Fully Booked
+Unavailable
+
+Do not use datetime-local input.
+
+==================================================
+
+STEP 3
+Party Size
+
+Replace the numeric input with large touch-friendly cards:
+
+1-2 Guests
+3-4 Guests
+5-6 Guests
+7+ Guests
+
+Desktop:
+4-column layout.
+
+Mobile:
+2-column layout.
+
+==================================================
+
+STEP 4
+Guest Details
+
+Only after date, time and party size are selected:
+
+Fields:
+
+Name (required)
+Phone (required)
+Email (optional)
+
+Hide optional fields inside a collapsible section:
+
+Special Occasion
+Special Requests
+
+==================================================
+
+# UX REQUIREMENTS
+
+Add:
+
+Step indicator:
+
+1. Date
+2. Time & Guests
+3. Details
+
+Progress bar:
+
+●────○────○
+●────●────○
+●────●────●
+
+Display a booking summary card:
+
+Date
+Time
+Guests
+
+Example:
+
+Friday, 20 June
+7:30 PM
+4 Guests
+
+✓ Table Available
+
+Estimated stay:
+2 hours
+
+==================================================
+
+# VISUAL REQUIREMENTS
+
+Maintain Toma Lounge dark luxury theme.
+
+Use:
+
+* shadcn/ui
+* Framer Motion for transitions
+* large touch targets
+* subtle animations
+
+The booking experience should feel premium, modern and mobile-first.
+
+Think:
+OpenTable + SevenRooms + luxury Dubai restaurant experience.
+
+==================================================
+
+# IMPORTANT
+
+Do NOT modify:
+
+* API contracts
+* Reservation endpoint
+* Supabase schema
+* Email flow
+* Realtime logic
+* Existing dashboard functionality
+
+Only redesign the booking UX and prepare the frontend structure so future Business Hours, Blocked Dates and Capacity Management can plug into this flow without major refactoring.
