@@ -36,53 +36,77 @@ export function Home() {
       </script>
       
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background image with cinematic filter */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src="/images/interior.png" 
-            alt="Toma Lounge Interior" 
-            className="w-full h-full object-cover opacity-40"
+          <img
+            src="/images/hero.png"
+            alt="Toma Lounge Atmosphere"
+            fetchPriority="high"
+            className="w-full h-full object-cover object-center"
+            style={{ filter: "brightness(0.55) saturate(0.9) blur(1px)", transform: "scale(1.02)" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background"></div>
         </div>
-        
-        <div className="container relative z-10 mx-auto px-4 text-center">
+
+        {/* Premium gradient overlay */}
+        <div
+          className="absolute inset-0 z-10"
+          style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.60) 50%, rgba(0,0,0,0.72) 100%)" }}
+        />
+
+        {/* Vignette */}
+        <div
+          className="absolute inset-0 z-10 pointer-events-none"
+          style={{ boxShadow: "inset 0 0 200px rgba(0,0,0,0.25)" }}
+        />
+
+        {/* Content */}
+        <div className="container relative z-20 mx-auto px-4 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary mb-6 text-sm font-medium">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border mb-8 text-sm font-medium"
+              style={{ borderColor: "rgba(184,150,99,0.4)", color: "#B89663", background: "rgba(184,150,99,0.08)" }}>
               <Clock size={14} /> Open Until 3 AM
             </div>
-            
-            <h1 className="text-5xl md:text-7xl font-serif font-bold text-foreground mb-6">
-              Where Taste Meets <span className="text-primary">Comfort</span>
+
+            <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-4 leading-tight drop-shadow-lg">
+              Where Taste Meets <span style={{ color: "#20C8F5" }}>Comfort</span>
             </h1>
-            
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Premium charcoal grills, artful mezze, and an opulent shisha lounge in the heart of Barsha Heights.
+
+            <p className="text-base md:text-lg font-light tracking-widest mb-8 drop-shadow"
+              style={{ color: "rgba(255,255,255,0.75)", letterSpacing: "0.12em" }}>
+              Authentic Syrian Cuisine &nbsp;·&nbsp; Premium Shisha &nbsp;·&nbsp; Lounge Experience
             </p>
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-              <Button size="lg" className="w-full sm:w-auto" asChild>
+              <Button
+                size="lg"
+                className="w-full sm:w-auto font-semibold shadow-lg"
+                style={{ background: "#20C8F5", color: "#000" }}
+                asChild
+              >
                 <Link href="/contact">Reserve a Table</Link>
               </Button>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto border-primary text-primary hover:bg-primary/10" asChild>
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto font-semibold"
+                style={{ borderColor: "#B89663", color: "#B89663", background: "transparent" }}
+                asChild
+              >
                 <Link href="/menu">View Menu</Link>
               </Button>
             </div>
-            
+
             <div className="flex items-center justify-center gap-2 text-sm">
-              <div className="flex text-secondary">
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
+              <div className="flex" style={{ color: "#B89663" }}>
+                {[...Array(5)].map((_, i) => <Star key={i} size={15} fill="currentColor" />)}
               </div>
-              <span className="font-medium">4.4 Google Rating</span>
-              <span className="text-muted-foreground">(231 Reviews)</span>
+              <span className="font-medium text-white">4.4 Google Rating</span>
+              <span style={{ color: "rgba(255,255,255,0.55)" }}>(231 Reviews)</span>
             </div>
           </motion.div>
         </div>

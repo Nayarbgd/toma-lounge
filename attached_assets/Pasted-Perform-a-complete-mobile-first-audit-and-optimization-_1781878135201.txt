@@ -1,0 +1,34 @@
+Perform a complete mobile-first audit and optimization of the entire website. The goal is to make the site feel polished, premium, and flawless on all phone sizes (320px–768px) and fully compatible with deployment on Vercel.
+Requirements:
+•	Inspect every page, section, component, modal, menu, slider, button, form, animation, and interaction.
+•	Fix any responsive issues, overflow, clipping, misalignment, overlapping elements, or broken spacing.
+•	Ensure there is no horizontal scrolling anywhere on the website.
+•	Verify that all content remains perfectly centered, aligned, and visually balanced on mobile devices.
+•	Make typography, padding, margins, images, and buttons scale correctly across all screen sizes.
+•	Ensure touch targets are large enough and comfortable to use on mobile.
+Navigation requirements:
+•	Fix the common SPA mobile navigation bug where a user scrolls down on one page, opens the mobile menu, navigates to another route, and lands on the new page at the previous scroll position.
+•	Every route change must automatically scroll to the top of the page.
+•	The mobile menu must close properly after navigation.
+•	Navigation transitions should feel smooth and natural with no flickering, jumping, or layout shifts.
+Performance and UX requirements:
+•	Eliminate layout shifts (CLS issues).
+•	Avoid content jumping while images, fonts, or components load.
+•	Ensure animations are smooth and do not cause lag on mobile devices.
+•	Verify that all sections render correctly on iPhone and Android viewports.
+•	Optimize image loading and responsiveness.
+•	Ensure all interactive elements respond correctly to taps.
+•	Prevent double scrolling, body scroll locking issues, and broken fixed elements.
+•	Test portrait and landscape orientations.
+Quality control:
+•	Simulate and test the entire website on multiple viewport sizes:
+o	320px
+o	375px
+o	390px
+o	414px
+o	430px
+o	768px
+After making changes, perform a final QA pass and fix every issue found until the mobile experience feels production-ready, fluid, and premium, with no visual bugs, no navigation bugs, and no broken interactions.
+
+
+
